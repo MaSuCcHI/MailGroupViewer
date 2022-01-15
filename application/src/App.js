@@ -1,19 +1,22 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 
 import './App.css';
-import MailGroupViewer from './component/viewer/mailGroupView';
-import DetailInfoViewer from './component/detailInfo/detailInfoView';
-import Header from './component/header/header';
+import MailGroupViewer from './component/view/mailGroupView/mailGroupView';
+import DetailInfoViewer from './component/view/detailInfo/detailInfoView';
+import Header from './component/view/header/header';
 
 function App() {
 
-  const [showDetailInfo,setShowDetailInfo] = React.useState(0)
-
+  const [showDetailInfo,setShowDetailInfo] = React.useState(true)
+  const [mailGroupInfo,setMailgroupInfo] = React.useState()
   return (
     <div className="App">
       <Header/>
       <div className='MainApp'>
-        <MailGroupViewer/>
+        <MailGroupViewer
+          showDetailInfo={showDetailInfo}
+          setShowDetailInfo={setShowDetailInfo}
+        />
         <DetailInfoViewer
           showDetailInfo={showDetailInfo}
           setShowDetailInfo={setShowDetailInfo}
