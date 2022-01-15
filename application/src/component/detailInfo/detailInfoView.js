@@ -1,11 +1,12 @@
 import styles from './detailInfoView.module.css'
 import React, {useEffect,useState} from "react";
 
-export default function DetailInfoViewer (
-    props
-) {
+export default function DetailInfoViewer ({
+    showDetailInfo,
+    setShowDetailInfo
+}){
 
-    if (props.showDetailInfo) {
+    if (showDetailInfo) {
         return (
             <div className={styles.detailInfoViewer}>
                 detailInfo
