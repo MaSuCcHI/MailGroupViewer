@@ -11,10 +11,16 @@ export default function UploadFileModal ({
     showImportDataModal,
     setShowImportDataModal,
 }) {
+   
 
     const onDrop = useCallback(acceptedFiles => {
         // Do something with the files
         console.log(acceptedFiles[0])
+        const reader = new FileReader()
+        reader.onload = () => {
+            console.log(reader.result)
+        }
+        reader.readAsText(acceptedFiles[0])
     }, [])
     
     const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
