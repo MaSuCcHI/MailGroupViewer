@@ -1,6 +1,6 @@
 import styles from './mailGroupView.module.css'
-import React, {useEffect,useState} from "react";
 
+import React, {useEffect,useState} from "react";
 import createEngine, {
     DiagramModel,
     DefaultNodeModel,
