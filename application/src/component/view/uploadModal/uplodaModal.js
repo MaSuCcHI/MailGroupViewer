@@ -3,10 +3,12 @@ import { mailGroup, mailGroups } from "../../node/interface.ts"
 
 import React, {useCallback} from 'react'
 import Modal from "react-modal";
+import Papa from "papaparse"
 import { Button } from "@material-ui/core";
 import { Close, CloudUploadOutlined } from "@material-ui/icons";
 import { useDropzone } from 'react-dropzone'
 
+let tmpMailGroups = new Map()
 
 export default function UploadFileModal ({
     showImportDataModal,
@@ -14,18 +16,29 @@ export default function UploadFileModal ({
     mailGroups,
     setMailGroups,
 }) {
-   
-    let tmpMailGroups = {}
 
     const onDrop = useCallback(acceptedFiles => {
         // Do something with the files
         console.log(acceptedFiles[0])
         const reader = new FileReader()
-        reader.onload = () => {
-            console.log(reader.result)
-
-        }
         reader.readAsText(acceptedFiles[0])
+        reader.onload = () => {
+            const result = Papa.parse(reader.result)
+            //console.log(result.data)
+            // TODO 関数に分割
+            tmpMailGroups = new Map()
+            result.data.forEach((elem, index) => {
+                if(index===0) { return } 
+                let group = elem[0]
+                let user = elem[1]
+                if (!tmpMailGroups.has(group)) {
+                    tmpMailGroups.set(group,new Array)
+                }
+                let children = tmpMailGroups.get(group)
+                children.push(user)
+            })
+             console.log(tmpMailGroups)
+        }
     }, [])
     
     const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
@@ -51,6 +64,7 @@ export default function UploadFileModal ({
                 </div>
                 <div className={styles.footer}>
                     <Button onClick={() => {
+                        console.log(tmpMailGroups)
                         setMailGroups(tmpMailGroups)
                         setShowImportDataModal(false)
                     }}>

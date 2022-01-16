@@ -15,7 +15,7 @@ function App() {
   const [mailGroups,setMailGroups] = React.useState()
 
   useEffect(() => {
-    console.log(showImportDataModal)
+    console.log(mailGroups)
   })
 
   return (
