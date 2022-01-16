@@ -8,10 +8,19 @@ import Header from './component/view/header/header';
 function App() {
 
   const [showDetailInfo,setShowDetailInfo] = React.useState(true)
+  const [showImportDataModal,setShowImportDataModal] = React.useState(false)
   const [mailGroupInfo,setMailgroupInfo] = React.useState()
+
+
+
   return (
     <div className="App">
-      <Header/>
+      <Header className="Header"
+        showImportDataModal={showImportDataModal}
+        setShowImportDataModal={setShowImportDataModal}
+        mailGroupInfo={mailGroupInfo}
+        setMailgroupInfo={setMailgroupInfo}
+      />
       <div className='MainApp'>
         <MailGroupViewer
           showDetailInfo={showDetailInfo}
