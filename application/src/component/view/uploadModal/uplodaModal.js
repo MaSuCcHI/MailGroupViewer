@@ -14,6 +14,7 @@ export default function UploadFileModal ({
 
     const onDrop = useCallback(acceptedFiles => {
         // Do something with the files
+        console.log(acceptedFiles[0])
     }, [])
     
     const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
