@@ -1,4 +1,5 @@
 import styles from "./uploadModal.module.css"
+import { mailGroup, mailGroups } from "../../node/interface.ts"
 
 import React, {useCallback} from 'react'
 import Modal from "react-modal";
@@ -10,8 +11,11 @@ import { useDropzone } from 'react-dropzone'
 export default function UploadFileModal ({
     showImportDataModal,
     setShowImportDataModal,
+    mailGroups,
+    setMailGroups,
 }) {
    
+    let tmpMailGroups = {}
 
     const onDrop = useCallback(acceptedFiles => {
         // Do something with the files
@@ -19,6 +23,7 @@ export default function UploadFileModal ({
         const reader = new FileReader()
         reader.onload = () => {
             console.log(reader.result)
+
         }
         reader.readAsText(acceptedFiles[0])
     }, [])
@@ -45,7 +50,10 @@ export default function UploadFileModal ({
                     </div>
                 </div>
                 <div className={styles.footer}>
-                    <Button onClick={() => setShowImportDataModal(false)}>
+                    <Button onClick={() => {
+                        setMailGroups(tmpMailGroups)
+                        setShowImportDataModal(false)
+                    }}>
                         OK
                     </Button>
                 </div>

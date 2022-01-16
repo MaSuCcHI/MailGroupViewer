@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { mailGroups } from "./component/node/interface.ts"
+
 
 import './App.css';
 import MailGroupViewer from './component/view/mailGroupView/mailGroupView';
@@ -10,7 +12,7 @@ function App() {
 
   const [showDetailInfo,setShowDetailInfo] = React.useState(true)
   const [showImportDataModal,setShowImportDataModal] = React.useState(false)
-  const [mailGroupInfo,setMailgroupInfo] = React.useState()
+  const [mailGroups,setMailGroups] = React.useState()
 
   useEffect(() => {
     console.log(showImportDataModal)
@@ -21,12 +23,14 @@ function App() {
       <Header className="Header"
         showImportDataModal={showImportDataModal}
         setShowImportDataModal={setShowImportDataModal}
-        mailGroupInfo={mailGroupInfo}
-        setMailgroupInfo={setMailgroupInfo}
+        mailGroups={mailGroups}
+        setMailGroups={setMailGroups}
       />
       <UploadFileModal
         showImportDataModal={showImportDataModal}
         setShowImportDataModal={setShowImportDataModal}
+        mailGroups={mailGroups}
+        setMailGroups={setMailGroups}
       />
       <div className='MainApp'>
         <MailGroupViewer
