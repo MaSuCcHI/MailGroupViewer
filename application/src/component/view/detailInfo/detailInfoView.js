@@ -6,10 +6,11 @@ export default function DetailInfoViewer ({
     setShowDetailInfo
 }){
 
-    if (showDetailInfo) {
+    if ( showDetailInfo !== "" ) {
         return (
             <div className={styles.detailInfoViewer}>
-                detailInfo
+                DetailInfo:{showDetailInfo}
+                Groups:
             </div>
         )
     } else {

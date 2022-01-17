@@ -1,7 +1,7 @@
 import styles from "./uploadModal.module.css"
 import { mailGroup, mailGroups } from "../../node/interface.ts"
 
-import React, {useCallback} from 'react'
+import React, {useCallback, useEffect} from 'react'
 import Modal from "react-modal";
 import Papa from "papaparse"
 import { Button } from "@material-ui/core";
@@ -16,7 +16,8 @@ export default function UploadFileModal ({
     mailGroups,
     setMailGroups,
 }) {
-
+    Modal.setAppElement(document.getElementById('root'))
+    
     const onDrop = useCallback(acceptedFiles => {
         // Do something with the files
         console.log(acceptedFiles[0])
@@ -37,7 +38,7 @@ export default function UploadFileModal ({
                 let children = tmpMailGroups.get(group)
                 children.push(user)
             })
-             console.log(tmpMailGroups)
+            //  console.log(tmpMailGroups)
         }
     }, [])
     
@@ -64,7 +65,6 @@ export default function UploadFileModal ({
                 </div>
                 <div className={styles.footer}>
                     <Button onClick={() => {
-                        console.log(tmpMailGroups)
                         setMailGroups(tmpMailGroups)
                         setShowImportDataModal(false)
                     }}>

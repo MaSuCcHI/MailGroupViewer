@@ -11,12 +11,8 @@ import UploadFileModal from './component/view/uploadModal/uplodaModal';
 function App() {
 
   const [showDetailInfo,setShowDetailInfo] = React.useState(true)
-  const [showImportDataModal,setShowImportDataModal] = React.useState(false)
+  const [showImportDataModal,setShowImportDataModal] = React.useState("")
   const [mailGroups,setMailGroups] = React.useState()
-
-  useEffect(() => {
-    console.log(mailGroups)
-  })
 
   return (
     <div className="App">
@@ -26,16 +22,19 @@ function App() {
         mailGroups={mailGroups}
         setMailGroups={setMailGroups}
       />
-      <UploadFileModal
-        showImportDataModal={showImportDataModal}
-        setShowImportDataModal={setShowImportDataModal}
-        mailGroups={mailGroups}
-        setMailGroups={setMailGroups}
-      />
+      
       <div className='MainApp'>
+        <UploadFileModal
+          showImportDataModal={showImportDataModal}
+          setShowImportDataModal={setShowImportDataModal}
+          mailGroups={mailGroups}
+          setMailGroups={setMailGroups}
+        />
         <MailGroupViewer
           showDetailInfo={showDetailInfo}
           setShowDetailInfo={setShowDetailInfo}
+          mailGroups={mailGroups}
+          setMailGroups={setMailGroups}
         />
         <DetailInfoViewer
           showDetailInfo={showDetailInfo}
