@@ -10,7 +10,7 @@ import { CanvasWidget } from '@projectstorm/react-canvas-core';
 import { node } from 'prop-types';
 
 const engine = createEngine();
-const model = new DiagramModel()
+let model = new DiagramModel()
 export default function MailGroupViewer ({
     showDetailInfo,
     setShowDetailInfo,
@@ -81,11 +81,11 @@ export default function MailGroupViewer ({
 
     useEffect(() => {
         if (mailGroups === undefined || selectedMailGroup === undefined) {return}
-
+        model = new DiagramModel()
         const node = addNode(selectedMailGroup)
         const childrenNode = addChildrenNode(node)
 
-    },[mailGroups])
+    },[mailGroups,selectedMailGroup])
 
     return (
         <div className={styles.mailGroupViewer}>

@@ -22,6 +22,8 @@ function App() {
         setShowImportDataModal={setShowImportDataModal}
         mailGroups={mailGroups}
         setMailGroups={setMailGroups}
+        selectedMailGroup={selectedMailGroup}
+        setSelectedMailGroup={setSelectedMailGroup}
       />
       
       <div className='MainApp'>

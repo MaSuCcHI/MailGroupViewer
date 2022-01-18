@@ -1,26 +1,31 @@
 import styles from './header.module.css'
 import {Button} from '@mui/material'
-import {AddCircle} from '@mui/icons-material'
-import SimpleListMenu from './mailListMenu'
+import AddIcon from '@mui/icons-material/Add'
+import SimpleListMenu from './mailSelect'
+import MailSelect from './mailSelect'
 
 export default function Header ({
     showInportDataModal,
     setShowImportDataModal,
-    mailGroupInfo,
-    setMailGroupInfo
+    mailGroups,
+    setMailGroups,
+    selectedMailGroup,
+    setSelectedMailGroup,
 }) {
 
     return (
         <div className={styles.Header}>
             <Button className={styles.logo} variant="text">メールグループ</Button>
-            <SimpleListMenu
-              mailGroupInfo={mailGroupInfo}
-              setMailGroupInfo={setMailGroupInfo}
+            <MailSelect
+              mailGroups={mailGroups}
+              setMailGroups={setMailGroups}
+              selectedMailGroup={selectedMailGroup}
+              setSelectedMailGroup={setSelectedMailGroup}
             />
             <Button className={styles.uploadDataButton}
                 onClick={() => setShowImportDataModal(true)}
             >
-                <AddCircle/>up
+                <AddIcon fontSize='large' color='primary'/> up
             </Button>
         </div>
     )
