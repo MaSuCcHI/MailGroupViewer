@@ -19,6 +19,7 @@ export default function MailGroupViewer ({
     selectedMailGroup,
     setSelectedMailGroup,
 }) {
+    engine.setModel(model)
 
     function addNode(address) {
         const tmpNode = model.getNode(address)
@@ -50,14 +51,16 @@ export default function MailGroupViewer ({
     function addChildrenNode(parentNode) {
         const children = mailGroups.get(parentNode.id)
         
-
         let childrenNode = new Array()
         let grandChildrenNode = new Array()
         
+        const pX = parentNode.getX()
+        const pY = parentNode.getY()
         children.forEach((elem,index) => {
             console.log("c:"+elem)
             const link = new DefaultLinkModel()
             const childNode = addNode(elem)
+            childNode.setPosition(pX + 250, pY + 80 * index)
             const isGroup = mailGroups.has(elem)
             childrenNode.push(childNode)
 
@@ -68,14 +71,12 @@ export default function MailGroupViewer ({
             
             //再帰させる　孫，ひ孫の追加
             if(isGroup) {
-                addChildrenNode(childNode)
+                grandChildrenNode.concat(addChildrenNode(childNode))
             }
             
         })
-        //childrenと親を結ぶ
 
-
-        // return childrenNode.concat(grandChildrenNode)
+        return childrenNode.concat(grandChildrenNode)
     }
 
     useEffect(() => {
@@ -84,34 +85,7 @@ export default function MailGroupViewer ({
         const node = addNode(selectedMailGroup)
         const childrenNode = addChildrenNode(node)
 
-
-        // mailGroups.forEach((elems,index) => {
-        //     console.log(index)
-        //     console.log(elems)
-        //     const node = new DefaultNodeModel({
-        //         name: "メールグループ:" + index
-        //     })
-        //     node.registerListener({
-        //         selectionChanged: (event) => {
-        //             setShowDetailInfo(event.isSelected ? index : "")
-        //         }
-        //     })
-        //     node.addInPort(index)
-        //     elems.forEach((elem) => {
-        //         node.addOutPort(elem)
-        //     })
-        //     model.addAll(node)
-        // })
-
-
     },[mailGroups])
-
-    // const link1 = new DefaultLinkModel()
-    // link1.setTargetPort(node1.getPort("port1-1"))
-    // link1.setSourcePort(node2.getPort("port2-1"))
-
-    // model.addAll(node1,node2,link1)
-    engine.setModel(model)
 
     return (
         <div className={styles.mailGroupViewer}>
