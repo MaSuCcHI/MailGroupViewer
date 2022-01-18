@@ -1,6 +1,7 @@
 import styles from './header.module.css'
-import {Button,menu} from '@material-ui/core'
-import {AddCircle} from '@material-ui/icons'
+import {Button} from '@mui/material'
+import {AddCircle} from '@mui/icons-material'
+import SimpleListMenu from './mailListMenu'
 
 export default function Header ({
     showInportDataModal,
@@ -12,7 +13,10 @@ export default function Header ({
     return (
         <div className={styles.Header}>
             <Button className={styles.logo} variant="text">メールグループ</Button>
-            <menu className={styles.mailMenu}>mailMenu</menu>
+            <SimpleListMenu
+              mailGroupInfo={mailGroupInfo}
+              setMailGroupInfo={setMailGroupInfo}
+            />
             <Button className={styles.uploadDataButton}
                 onClick={() => setShowImportDataModal(true)}
             >

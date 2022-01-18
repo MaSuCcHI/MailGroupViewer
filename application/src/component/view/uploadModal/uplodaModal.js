@@ -4,8 +4,8 @@ import { mailGroup, mailGroups } from "../../node/interface.ts"
 import React, {useCallback, useEffect} from 'react'
 import Modal from "react-modal";
 import Papa from "papaparse"
-import { Button } from "@material-ui/core";
-import { Close, CloudUploadOutlined } from "@material-ui/icons";
+import { Button } from "@mui/material";
+import { Close, CloudUploadOutlined } from '@mui/icons-material'
 import { useDropzone } from 'react-dropzone'
 
 let tmpMailGroups = new Map()
