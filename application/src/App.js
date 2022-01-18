@@ -13,6 +13,7 @@ function App() {
   const [showDetailInfo,setShowDetailInfo] = React.useState(true)
   const [showImportDataModal,setShowImportDataModal] = React.useState("")
   const [mailGroups,setMailGroups] = React.useState()
+  const [selectedMailGroup,setSelectedMailGroup] = React.useState("gA@test.com")
 
   return (
     <div className="App">
@@ -35,6 +36,8 @@ function App() {
           setShowDetailInfo={setShowDetailInfo}
           mailGroups={mailGroups}
           setMailGroups={setMailGroups}
+          selectedMailGroup={selectedMailGroup}
+          setSelectedMailgroup={setSelectedMailGroup}
         />
         <DetailInfoViewer
           showDetailInfo={showDetailInfo}
