@@ -1,7 +1,6 @@
 import styles from './header.module.css'
 import {Button} from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
-import SimpleListMenu from './mailSelect'
 import MailSelect from './mailSelect'
 
 export default function Header ({

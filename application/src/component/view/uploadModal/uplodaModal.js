@@ -65,7 +65,10 @@ export default function UploadFileModal ({
                 </div>
                 <div className={styles.footer}>
                     <Button onClick={() => {
-                        setMailGroups(tmpMailGroups)
+                        console.log(tmpMailGroups)
+                        if(tmpMailGroups.size!==0){
+                            setMailGroups(tmpMailGroups)
+                        }
                         setShowImportDataModal(false)
                     }}>
                         OK

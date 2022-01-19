@@ -10,7 +10,7 @@ import UploadFileModal from './component/view/uploadModal/uplodaModal';
 
 function App() {
 
-  const [showDetailInfo,setShowDetailInfo] = React.useState(true)
+  const [showDetailInfo,setShowDetailInfo] = React.useState("")
   const [showImportDataModal,setShowImportDataModal] = React.useState("")
   const [mailGroups,setMailGroups] = React.useState()
   const [selectedMailGroup,setSelectedMailGroup] = React.useState("gA@test.com")
