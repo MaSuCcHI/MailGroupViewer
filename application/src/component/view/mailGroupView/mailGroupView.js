@@ -80,6 +80,7 @@ export default function MailGroupViewer ({
     }
 
     useEffect(() => {
+        console.log("mailGroupView useEffect:"+selectedMailGroup)
         if (mailGroups === undefined || selectedMailGroup === undefined) {return}
         model = new DiagramModel()
         const node = addNode(selectedMailGroup)
