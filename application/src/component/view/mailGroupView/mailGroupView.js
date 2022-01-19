@@ -86,6 +86,7 @@ export default function MailGroupViewer ({
         const node = addNode(selectedMailGroup)
         const childrenNode = addChildrenNode(node)
 
+        engine.setModel(model)
     },[mailGroups,selectedMailGroup])
 
     return (
