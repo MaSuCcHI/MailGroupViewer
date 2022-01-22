@@ -44,6 +44,7 @@ function App() {
         <DetailInfoViewer
           showDetailInfo={showDetailInfo}
           setShowDetailInfo={setShowDetailInfo}
+          mailGroups={mailGroups}
         />
       </div>
       

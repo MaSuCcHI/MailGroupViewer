@@ -57,7 +57,7 @@ export default function MailGroupViewer ({
         const pX = parentNode.getX()
         const pY = parentNode.getY()
         children.forEach((elem,index) => {
-            console.log("c:"+elem)
+            // console.log("c:"+elem)
             const link = new DefaultLinkModel()
             const childNode = addNode(elem)
             childNode.setPosition(pX + 250, pY + 80 * index)
