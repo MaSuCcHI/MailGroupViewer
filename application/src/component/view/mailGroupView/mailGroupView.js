@@ -34,14 +34,6 @@ export default function MailGroupViewer ({
             }
         })
 
-        //　メールグループ
-        if (isGroup) {
-                       
-        }
-        // ユーザー 
-        else {
-
-        }
         node.addInPort(address)
         model.addAll(node)
         console.log("addNode:"+address)
@@ -49,32 +41,51 @@ export default function MailGroupViewer ({
     }
 
     function addChildrenNode(parentNode) {
-        const children = mailGroups.get(parentNode.id)
-        
-        let childrenNode = new Array()
-        let grandChildrenNode = new Array()
-        
         const pX = parentNode.getX()
         const pY = parentNode.getY()
+        const children = mailGroups.get(parentNode.id)
+        
+        // ユーザーアドレスをまとめたノード
+        let usersAddressNode = new DefaultNodeModel({name:"ユーザーアドレス"})
+        usersAddressNode.id = parentNode.id + ".users"
+        let users = []
+
+        let childrenNode = [usersAddressNode]
+        let grandChildrenNode = []
+           
         children.forEach((elem,index) => {
             // console.log("c:"+elem)
-            const link = new DefaultLinkModel()
-            const childNode = addNode(elem)
-            childNode.setPosition(pX + 250, pY + 80 * index)
             const isGroup = mailGroups.has(elem)
-            childrenNode.push(childNode)
+            
+            if(isGroup){
+                // メールグループ
+                const link = new DefaultLinkModel()
+                const childNode = addNode(elem)
+                childNode.setPosition(pX + 250, pY + 80 * (index - users.length) )
+                childrenNode.push(childNode)
 
-            parentNode.addOutPort(elem)
-            link.setSourcePort(parentNode.getPort(elem))
-            link.setTargetPort(childNode.getPort(elem))
-            model.addAll(link)
-            
-            //再帰させる　孫，ひ孫の追加
-            if(isGroup) {
+                parentNode.addOutPort(elem)
+                link.setSourcePort(parentNode.getPort(elem))
+                link.setTargetPort(childNode.getPort(elem))
+                model.addAll(link)
+                
+                //再帰させる　孫，ひ孫の追加
                 grandChildrenNode.concat(addChildrenNode(childNode))
+
+            }else{
+                // ユーザーアドレス
+                users.push(elem)
             }
-            
         })
+
+        const link = new DefaultLinkModel()
+        usersAddressNode.setPosition(pX + 250, pY + 80 * (children.length - users.length))
+        usersAddressNode.addInPort("Users")
+        parentNode.addOutPort("Users")
+
+        link.setSourcePort(parentNode.getPort("Users"))
+        link.setTargetPort(usersAddressNode.getPort("Users"))
+        model.addAll(usersAddressNode,link)
 
         return childrenNode.concat(grandChildrenNode)
     }
