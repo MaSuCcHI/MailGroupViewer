@@ -47,7 +47,12 @@ export default function MailGroupViewer ({
         
         // ユーザーアドレスをまとめたノード
         let usersAddressNode = new DefaultNodeModel({name:"ユーザーアドレス"})
-        usersAddressNode.id = parentNode.id + ".users"
+        usersAddressNode.id = parentNode.id + "/users"
+        usersAddressNode.registerListener({
+            selectionChanged: (event) => {
+                setShowDetailInfo(event.isSelected ? usersAddressNode.id : "")
+            }
+        })
         let users = []
 
         let childrenNode = [usersAddressNode]
@@ -92,7 +97,7 @@ export default function MailGroupViewer ({
 
     useEffect(() => {
         console.log("mailGroupView useEffect:"+selectedMailGroup)
-        if (mailGroups === undefined || selectedMailGroup === undefined) {return}
+        if (mailGroups === undefined || selectedMailGroup === undefined || !mailGroups.has(selectedMailGroup)) {return}
         model = new DiagramModel()
         const node = addNode(selectedMailGroup)
         const childrenNode = addChildrenNode(node)
