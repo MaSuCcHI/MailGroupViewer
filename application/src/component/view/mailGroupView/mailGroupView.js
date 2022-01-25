@@ -54,7 +54,6 @@ export default function MailGroupViewer ({
             }
         })
         let users = []
-
         let childrenNode = [usersAddressNode]
         let grandChildrenNode = []
            
@@ -80,6 +79,15 @@ export default function MailGroupViewer ({
             }else{
                 // ユーザーアドレス
                 users.push(elem)
+                const ports = usersAddressNode.getOutPorts()
+                console.log("test")
+                console.log(ports.length)
+                if (ports.length < 5) {
+                    usersAddressNode.addOutPort(elem)            
+                } else if (ports.length === 5) {
+                    usersAddressNode.addOutPort("・・・") 
+                }
+
             }
         })
 
