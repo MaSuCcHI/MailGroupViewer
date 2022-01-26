@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "/MailGroupViewer/static/css/main.2001be99.css",
-    "main.js": "/MailGroupViewer/static/js/main.dcd75dea.js",
-    "index.html": "/MailGroupViewer/index.html",
-    "main.2001be99.css.map": "/MailGroupViewer/static/css/main.2001be99.css.map",
-    "main.dcd75dea.js.map": "/MailGroupViewer/static/js/main.dcd75dea.js.map"
+    "main.css": "/maiver/static/css/main.2001be99.css",
+    "main.js": "/maiver/static/js/main.dcd75dea.js",
+    "index.html": "/maiver/index.html",
+    "main.2001be99.css.map": "/maiver/static/css/main.2001be99.css.map",
+    "main.dcd75dea.js.map": "/maiver/static/js/main.dcd75dea.js.map"
   },
   "entrypoints": [
     "static/css/main.2001be99.css",
