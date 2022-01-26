@@ -26,7 +26,7 @@ export default function MailGroupViewer ({
         if (tmpNode !== undefined) {return tmpNode}
 
         const isGroup = mailGroups.has(address)
-        const node = new DefaultNodeModel({name: (isGroup ? "メールG:":"")+address})
+        const node = new DefaultNodeModel({name: address})
         node.id = address
         node.registerListener({
             selectionChanged: (event) => {
@@ -34,7 +34,7 @@ export default function MailGroupViewer ({
             }
         })
 
-        node.addInPort(address)
+        node.addInPort(" ")
         model.addAll(node)
         console.log("addNode:"+address)
         return node
@@ -70,7 +70,7 @@ export default function MailGroupViewer ({
 
                 parentNode.addOutPort(elem)
                 link.setSourcePort(parentNode.getPort(elem))
-                link.setTargetPort(childNode.getPort(elem))
+                link.setTargetPort(childNode.getPort(" "))
                 model.addAll(link)
                 
                 //再帰させる　孫，ひ孫の追加
@@ -91,14 +91,19 @@ export default function MailGroupViewer ({
             }
         })
 
-        const link = new DefaultLinkModel()
-        usersAddressNode.setPosition(pX + 250, pY + 80 * (children.length - users.length))
-        usersAddressNode.addInPort("Users")
-        parentNode.addOutPort("Users")
+        
 
-        link.setSourcePort(parentNode.getPort("Users"))
-        link.setTargetPort(usersAddressNode.getPort("Users"))
-        model.addAll(usersAddressNode,link)
+        if(usersAddressNode.getOutPorts().length !== 0){
+            const link = new DefaultLinkModel()
+            usersAddressNode.setPosition(pX + 250, pY + 80 * (children.length - users.length))
+            usersAddressNode.addInPort("Users")
+            parentNode.addOutPort("Users")
+            link.setSourcePort(parentNode.getPort("Users"))
+            link.setTargetPort(usersAddressNode.getPort("Users"))
+            
+            model.addAll(usersAddressNode,link)
+        }
+        
 
         return childrenNode.concat(grandChildrenNode)
     }

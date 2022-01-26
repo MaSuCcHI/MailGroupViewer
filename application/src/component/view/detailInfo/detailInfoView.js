@@ -46,6 +46,7 @@ export default function DetailInfoViewer ({
 
     
     function Info(){
+        console.log(users.join('\n'))
         return(
             // <div>te sa t</div>
                 <Card>
