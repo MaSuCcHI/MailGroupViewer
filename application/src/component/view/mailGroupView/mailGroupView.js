@@ -49,7 +49,7 @@ export default function MailGroupViewer ({
     }
 
     function addChildrenNode(parentNode) {
-        const children = mailGroups.get(parentNode.id)
+        const children = mailGroups.get(parentNode.id).children
         
         let childrenNode = new Array()
         let grandChildrenNode = new Array()

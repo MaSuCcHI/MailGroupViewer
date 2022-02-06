@@ -11,7 +11,7 @@ function GetChildrenUser(group,mailGroups) {
     let users = []
     console.log(mailGroups)
     console.log(group)
-    const address = mailGroups.get(group)
+    const address = mailGroups.get(group).children
     console.log(address)
     address.forEach(element => {
         console.log("test10")

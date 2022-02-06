@@ -33,9 +33,11 @@ export default function UploadFileModal ({
                 let group = elem[0]
                 let user = elem[1]
                 if (!tmpMailGroups.has(group)) {
-                    tmpMailGroups.set(group,new Array)
+                    let parents = new Array()
+                    let children = new Array()
+                    tmpMailGroups.set(group,{"parents":parents,"children":children})
                 }
-                let children = tmpMailGroups.get(group)
+                let children = tmpMailGroups.get(group).children
                 children.push(user)
             })
             //  console.log(tmpMailGroups)
@@ -65,7 +67,22 @@ export default function UploadFileModal ({
                 </div>
                 <div className={styles.footer}>
                     <Button onClick={() => {
-                        console.log(tmpMailGroups)
+                        tmpMailGroups.forEach((value,key,m)=>{
+                            const children = value["children"]
+                            // parentの情報をたどり追加する処理
+                            children.forEach(value => {
+                                if(tmpMailGroups.has(value)){
+                                //メールグループ
+                                    let tmp = tmpMailGroups.get(value)
+                                    tmp.parents.push(key)
+                                }else{
+                                //ユーザーメール
+
+                                }
+                                
+                            })
+                        })
+                        // console.log(tmpMailGroups)
                         if(tmpMailGroups.size!==0){
                             setMailGroups(tmpMailGroups)
                         }
