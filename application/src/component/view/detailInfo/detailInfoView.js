@@ -6,9 +6,17 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 
+function union(setA, setB) {
+    let _union = new Set(setA)
+    for (let elem of setB) {
+        _union.add(elem)
+    }
+    return _union
+}
 
-function GetChildrenUser(group,mailGroups) {
-    let users = []
+
+function GetChildrenUser(group,mailGroups,gatherGrandchild) {
+    let users = new Set()
     console.log(mailGroups)
     console.log(group)
     const address = mailGroups.get(group).children
@@ -16,11 +24,13 @@ function GetChildrenUser(group,mailGroups) {
     address.forEach(element => {
         console.log("test10")
         if(mailGroups.has(element)){
-            // グループ
-            users.push(GetChildrenUser(element,mailGroups))
+            // グループ 
+            if(gatherGrandchild){
+                users = union(users,GetChildrenUser(element,mailGroups,true))
+            }
         } else {
             //　ユーザー
-            users.push(element)
+            users.add(element)
         }
     });
     return users
@@ -36,6 +46,7 @@ export default function DetailInfoViewer ({
 
     
     function Info(){
+        console.log(users.join('\n'))
         return(
             // <div>te sa t</div>
                 <Card>
@@ -47,12 +58,14 @@ export default function DetailInfoViewer ({
         )
     }
 
-
-    if (showDetailInfo !== "") {
-
-        if(mailGroups.has(showDetailInfo)){
-            users = GetChildrenUser(showDetailInfo,mailGroups)
-            console.log("test2")
+    const detailTarget = showDetailInfo.split("/")
+    if (detailTarget[0] !== "" && mailGroups.has(detailTarget[0])) {
+        if( detailTarget[1]===undefined ){
+            // メールグループノード
+            users = Array.from(GetChildrenUser(detailTarget[0],mailGroups,true))
+        } else if ( detailTarget[1]==="users" ) {
+            // ユーザーアドレスノード
+            users = Array.from(GetChildrenUser(detailTarget[0],mailGroups,false))
         }
 
         return (

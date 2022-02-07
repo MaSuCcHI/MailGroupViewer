@@ -26,7 +26,7 @@ export default function MailGroupViewer ({
         if (tmpNode !== undefined) {return tmpNode}
 
         const isGroup = mailGroups.has(address)
-        const node = new DefaultNodeModel({name: (isGroup ? "メールG:":"")+address})
+        const node = new DefaultNodeModel({name: address})
         node.id = address
         node.registerListener({
             selectionChanged: (event) => {
@@ -34,15 +34,7 @@ export default function MailGroupViewer ({
             }
         })
 
-        //　メールグループ
-        if (isGroup) {
-                       
-        }
-        // ユーザー 
-        else {
-
-        }
-        node.addInPort(address)
+        node.addInPort(" ")
         model.addAll(node)
         console.log("addNode:"+address)
         return node
@@ -50,27 +42,74 @@ export default function MailGroupViewer ({
 
     function addChildrenNode(parentNode) {
         const children = mailGroups.get(parentNode.id).children
-        
         const pX = parentNode.getX()
         const pY = parentNode.getY()
+        
+        // ユーザーアドレスをまとめたノード
+        let usersAddressNode = new DefaultNodeModel({name:"ユーザーアドレス"})
+        usersAddressNode.id = parentNode.id + "/users"
+        usersAddressNode.registerListener({
+            selectionChanged: (event) => {
+                setShowDetailInfo(event.isSelected ? usersAddressNode.id : "")
+            }
+        })
+        let users = []
+        let childrenNode = [usersAddressNode]
+        let grandChildrenNode = []
+           
         children.forEach((elem,index) => {
             // console.log("c:"+elem)
-            const link = new DefaultLinkModel()
-            const childNode = addNode(elem)
-            childNode.setPosition(pX + 250, pY + 80 * index)
             const isGroup = mailGroups.has(elem)
 
-            parentNode.addOutPort(elem)
-            link.setSourcePort(parentNode.getPort(elem))
-            link.setTargetPort(childNode.getPort(elem))
-            model.addAll(link)
+
+            // parentNode.addOutPort(elem)
+            // link.setSourcePort(parentNode.getPort(elem))
+            // link.setTargetPort(childNode.getPort(elem))
+            // model.addAll(link)
             
-            //再帰させる　孫，ひ孫の追加
-            if(isGroup) {
-                addChildrenNode(childNode)
+            // //再帰させる　孫，ひ孫の追加
+            // if(isGroup) {
+            //     addChildrenNode(childNode)
+            
+            if(isGroup){
+                // メールグループ
+                const link = new DefaultLinkModel()
+                const childNode = addNode(elem)
+                childNode.setPosition(pX + 250, pY + 80 * (index - users.length) )
+                childrenNode.push(childNode)
+
+                parentNode.addOutPort(elem)
+                link.setSourcePort(parentNode.getPort(elem))
+                link.setTargetPort(childNode.getPort(" "))
+                model.addAll(link)
+                
+                //再帰させる　孫，ひ孫の追加
+                grandChildrenNode.concat(addChildrenNode(childNode))
+
+            }else{
+                // ユーザーアドレス
+                users.push(elem)
+                const ports = usersAddressNode.getOutPorts()
+                console.log("test")
+                console.log(ports.length)
+                if (ports.length < 5) {
+                    usersAddressNode.addOutPort(elem)            
+                } else if (ports.length === 5) {
+                    usersAddressNode.addOutPort("・・・") 
+                }
             }
-            
         })
+        
+        if(usersAddressNode.getOutPorts().length !== 0){
+            const link = new DefaultLinkModel()
+            usersAddressNode.setPosition(pX + 250, pY + 80 * (children.length - users.length))
+            usersAddressNode.addInPort("Users")
+            parentNode.addOutPort("Users")
+            link.setSourcePort(parentNode.getPort("Users"))
+            link.setTargetPort(usersAddressNode.getPort("Users"))
+            
+            model.addAll(usersAddressNode,link)
+        }
 
         return
     }
@@ -88,7 +127,7 @@ export default function MailGroupViewer ({
             const link = new DefaultLinkModel()
             parentNode.addOutPort(childNode.id)
             link.setSourcePort(parentNode.getPort(childNode.id))
-            link.setTargetPort(childNode.getPort(childNode.id))
+            link.setTargetPort(childNode.getPort(" "))
             model.addAll(link)
             
             // //再帰させる　孫，ひ孫の追加
@@ -96,12 +135,11 @@ export default function MailGroupViewer ({
                 addParentsNode(parentNode)
             }
         })
-
     }
 
     useEffect(() => {
         console.log("mailGroupView useEffect:"+selectedMailGroup)
-        if (mailGroups === undefined || selectedMailGroup === undefined) {return}
+        if (mailGroups === undefined || selectedMailGroup === undefined || !mailGroups.has(selectedMailGroup)) {return}
         model = new DiagramModel()
         const node = addNode(selectedMailGroup)
         node.setSelected(true)
