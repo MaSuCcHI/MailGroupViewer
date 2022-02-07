@@ -55,25 +55,18 @@ export default function MailGroupViewer ({
         })
         let users = []
         let childrenNode = [usersAddressNode]
-        let grandChildrenNode = []
            
         children.forEach((elem,index) => {
             // console.log("c:"+elem)
             const isGroup = mailGroups.has(elem)
-
-
-            // parentNode.addOutPort(elem)
-            // link.setSourcePort(parentNode.getPort(elem))
-            // link.setTargetPort(childNode.getPort(elem))
-            // model.addAll(link)
-            
-            // //再帰させる　孫，ひ孫の追加
-            // if(isGroup) {
-            //     addChildrenNode(childNode)
             
             if(isGroup){
                 // メールグループ
+                if(model.getNode(elem) !== undefined){ return }
+
                 const link = new DefaultLinkModel()
+                model.addAll(link)
+
                 const childNode = addNode(elem)
                 childNode.setPosition(pX + 250, pY + 80 * (index - users.length) )
                 childrenNode.push(childNode)
@@ -81,11 +74,9 @@ export default function MailGroupViewer ({
                 parentNode.addOutPort(elem)
                 link.setSourcePort(parentNode.getPort(elem))
                 link.setTargetPort(childNode.getPort(" "))
-                model.addAll(link)
                 
                 //再帰させる　孫，ひ孫の追加
-                grandChildrenNode.concat(addChildrenNode(childNode))
-
+                addChildrenNode(childNode)
             }else{
                 // ユーザーアドレス
                 users.push(elem)
@@ -120,6 +111,8 @@ export default function MailGroupViewer ({
         const cX = childNode.getX()
         const cY = childNode.getY()
         parents.forEach((elem,index) => {
+            if(model.getNode(elem) !== undefined){ return }
+
             const parentNode = addNode(elem,true)
             parentNode.setPosition(cX - 250, cY - 80 * index)
             const isGroup = mailGroups.has(elem)
