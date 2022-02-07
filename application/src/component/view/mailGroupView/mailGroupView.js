@@ -21,7 +21,7 @@ export default function MailGroupViewer ({
 }) {
     engine.setModel(model)
 
-    function addNode(address) {
+    function addNode(address, isParent=false) {
         const tmpNode = model.getNode(address)
         if (tmpNode !== undefined) {return tmpNode}
 
@@ -51,9 +51,6 @@ export default function MailGroupViewer ({
     function addChildrenNode(parentNode) {
         const children = mailGroups.get(parentNode.id).children
         
-        let childrenNode = new Array()
-        let grandChildrenNode = new Array()
-        
         const pX = parentNode.getX()
         const pY = parentNode.getY()
         children.forEach((elem,index) => {
@@ -62,7 +59,6 @@ export default function MailGroupViewer ({
             const childNode = addNode(elem)
             childNode.setPosition(pX + 250, pY + 80 * index)
             const isGroup = mailGroups.has(elem)
-            childrenNode.push(childNode)
 
             parentNode.addOutPort(elem)
             link.setSourcePort(parentNode.getPort(elem))
@@ -71,12 +67,36 @@ export default function MailGroupViewer ({
             
             //再帰させる　孫，ひ孫の追加
             if(isGroup) {
-                grandChildrenNode.concat(addChildrenNode(childNode))
+                addChildrenNode(childNode)
             }
             
         })
 
-        return childrenNode.concat(grandChildrenNode)
+        return
+    }
+
+    function addParentsNode(childNode){
+        const parents = mailGroups.get(childNode.id).parents
+
+        const cX = childNode.getX()
+        const cY = childNode.getY()
+        parents.forEach((elem,index) => {
+            const parentNode = addNode(elem,true)
+            parentNode.setPosition(cX - 250, cY - 80 * index)
+            const isGroup = mailGroups.has(elem)
+
+            const link = new DefaultLinkModel()
+            parentNode.addOutPort(childNode.id)
+            link.setSourcePort(parentNode.getPort(childNode.id))
+            link.setTargetPort(childNode.getPort(childNode.id))
+            model.addAll(link)
+            
+            // //再帰させる　孫，ひ孫の追加
+            if(isGroup) {
+                addParentsNode(parentNode)
+            }
+        })
+
     }
 
     useEffect(() => {
@@ -84,7 +104,9 @@ export default function MailGroupViewer ({
         if (mailGroups === undefined || selectedMailGroup === undefined) {return}
         model = new DiagramModel()
         const node = addNode(selectedMailGroup)
-        const childrenNode = addChildrenNode(node)
+        node.setSelected(true)
+        addChildrenNode(node)
+        addParentsNode(node)
 
         engine.setModel(model)
     },[mailGroups,selectedMailGroup])
