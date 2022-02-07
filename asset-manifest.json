@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/MailGroupViewer/static/css/main.2001be99.css",
-    "main.js": "/MailGroupViewer/static/js/main.dcd75dea.js",
+    "main.js": "/MailGroupViewer/static/js/main.6b5b0681.js",
     "index.html": "/MailGroupViewer/index.html",
     "main.2001be99.css.map": "/MailGroupViewer/static/css/main.2001be99.css.map",
-    "main.dcd75dea.js.map": "/MailGroupViewer/static/js/main.dcd75dea.js.map"
+    "main.6b5b0681.js.map": "/MailGroupViewer/static/js/main.6b5b0681.js.map"
   },
   "entrypoints": [
     "static/css/main.2001be99.css",
-    "static/js/main.dcd75dea.js"
+    "static/js/main.6b5b0681.js"
   ]
 }
