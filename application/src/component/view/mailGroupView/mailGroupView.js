@@ -9,6 +9,7 @@ import createEngine, {
 import { CanvasWidget } from '@projectstorm/react-canvas-core';
 import { node } from 'prop-types';
 
+
 const engine = createEngine();
 let model = new DiagramModel()
 export default function MailGroupViewer ({
@@ -30,6 +31,7 @@ export default function MailGroupViewer ({
         node.id = address
         node.registerListener({
             selectionChanged: (event) => {
+                console.log("selected")
                 setShowDetailInfo(event.isSelected ? address : "")
             }
         })
@@ -40,7 +42,7 @@ export default function MailGroupViewer ({
         return node
     }
 
-    function addChildrenNode(parentNode) {
+    function addChildrenNode(parentNode,dissmiss=[]) {
         const children = mailGroups.get(parentNode.id).children
         const pX = parentNode.getX()
         const pY = parentNode.getY()
@@ -63,6 +65,7 @@ export default function MailGroupViewer ({
             if(isGroup){
                 // メールグループ
                 if(model.getNode(elem) !== undefined){ return }
+                if(elem in dissmiss){ return }
 
                 const link = new DefaultLinkModel()
                 model.addAll(link)
@@ -75,7 +78,7 @@ export default function MailGroupViewer ({
                 link.setSourcePort(parentNode.getPort(elem))
                 link.setTargetPort(childNode.getPort(" "))
                 
-                //再帰させる　孫，ひ孫の追加
+                // 再帰させる　孫，ひ孫の追加
                 addChildrenNode(childNode)
             }else{
                 // ユーザーアドレス
@@ -105,13 +108,14 @@ export default function MailGroupViewer ({
         return
     }
 
-    function addParentsNode(childNode){
+    function addParentsNode(childNode,dissmiss=[]){
         const parents = mailGroups.get(childNode.id).parents
 
         const cX = childNode.getX()
         const cY = childNode.getY()
         parents.forEach((elem,index) => {
             if(model.getNode(elem) !== undefined){ return }
+            if(elem in dissmiss){ return }
 
             const parentNode = addNode(elem,true)
             parentNode.setPosition(cX - 250, cY - 80 * index)
@@ -135,11 +139,13 @@ export default function MailGroupViewer ({
         if (mailGroups === undefined || selectedMailGroup === undefined || !mailGroups.has(selectedMailGroup)) {return}
         model = new DiagramModel()
         const node = addNode(selectedMailGroup)
+        node.setPosition(40,10)
         node.setSelected(true)
         addChildrenNode(node)
         addParentsNode(node)
 
         engine.setModel(model)
+        
     },[mailGroups,selectedMailGroup])
 
     return (
