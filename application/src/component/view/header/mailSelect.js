@@ -6,7 +6,14 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import { height } from '@mui/system';
 
+import Checkbox from '@mui/material/Checkbox';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const options = [
   'Show some love to MUI',
@@ -29,17 +36,51 @@ export default function MailSelect({
   if (mailGroups===undefined) { return(<div/>) }
   const t = Array.from(mailGroups.keys())
   return(
+    // <Autocomplete
+    //   multiple
+    //   options={t}
+    //   sx={{ width:600 }}
+    //   renderInput={(prams) => <TextField {...prams} label="メールグループ" />}
+    //   onInputChange={(event,newVal) => {
+    //     console.log(event)
+    //     console.log(newVal)
+    //     if(mailGroups.has(newVal)){
+    //       setSelectedMailGroup(newVal)
+    //     }
+    //   }}
+    // />
     <Autocomplete
+      multiple
+      // id="checkboxes-tags-demo"
       options={t}
-      sx={{ width:300 }}
-      renderInput={(prams) => <TextField {...prams} label="メールグループ" />}
-      onInputChange={(event,newVal) => {
-        console.log(event)
-        console.log(newVal)
-        if(mailGroups.has(newVal)){
-          setSelectedMailGroup(newVal)
-        }
+      disableCloseOnSelect
+      // getOptionLabel={(option) => option.title}
+      renderOption={(props, option, { selected }) => (
+        <li {...props}>
+          <Checkbox
+            icon={icon}
+            checkedIcon={checkedIcon}
+            style={{ marginRight: 8 }}
+            checked={selected}
+          />
+          {option}
+        </li>
+      )}
+      style={{ width: 500 }}
+      renderInput={(params) => (
+        <TextField {...params} label="メールグループ"  />
+      )}
+      onChange={(e,v)=>{
+        console.log(e)
+        console.log(v)
       }}
+      // onInputChange={(event,newVal) => {
+      //   console.log(event)
+      //   console.log(newVal)
+      //   if(mailGroups.has(newVal)){
+      //     setSelectedMailGroup(newVal)
+      //   }
+      //  }}
     />
   )
 }
