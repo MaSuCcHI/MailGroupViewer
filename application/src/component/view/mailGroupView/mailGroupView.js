@@ -65,7 +65,7 @@ export default function MailGroupViewer ({
             if(isGroup){
                 // メールグループ
                 if(model.getNode(elem) !== undefined){ return }
-                if(elem in dissmiss){ return }
+                if(dissmiss.includes(elem)){ return }
 
                 const link = new DefaultLinkModel()
                 model.addAll(link)
@@ -80,6 +80,7 @@ export default function MailGroupViewer ({
                 
                 // 再帰させる　孫，ひ孫の追加
                 addChildrenNode(childNode)
+                addParentsNode(childNode,[parentNode.id])
             }else{
                 // ユーザーアドレス
                 users.push(elem)
@@ -115,7 +116,7 @@ export default function MailGroupViewer ({
         const cY = childNode.getY()
         parents.forEach((elem,index) => {
             if(model.getNode(elem) !== undefined){ return }
-            if(elem in dissmiss){ return }
+            if(dissmiss.includes(elem)){ return }
 
             const parentNode = addNode(elem,true)
             parentNode.setPosition(cX - 250, cY - 80 * index)
@@ -130,6 +131,7 @@ export default function MailGroupViewer ({
             // //再帰させる　孫，ひ孫の追加
             if(isGroup) {
                 addParentsNode(parentNode)
+                addChildrenNode(parentNode,[childNode.id])
             }
         })
     }
