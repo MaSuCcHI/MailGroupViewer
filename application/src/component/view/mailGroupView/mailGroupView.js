@@ -53,21 +53,21 @@ export default function MailGroupViewer ({
         // ユーザーアドレスをまとめたノード
         const isExistUserAddressNode = nodes.has(parentNode.id + "/users")
         let usersAddressNode = addNode( parentNode.id + "/users",false,true)
-           
+        let numGroupChildren = 0   
         children.forEach((elem,index) => {
             const isGroup = mailGroups.has(elem)
             
             if(isGroup){
                 // メールグループ
+                numGroupChildren = numGroupChildren + 1
                 if(nodes.get(elem) !== undefined){ return }
                 if(dissmiss.includes(elem)){ return }
-                
 
                 const link = new DefaultLinkModel()
                 model.addAll(link)
 
                 const childNode = addNode(elem)
-                childNode.setPosition(pX + 250, pY + 100 * index )
+                childNode.setPosition(pX + 350, pY + 100 * (numGroupChildren-1) )
 
                 parentNode.addOutPort(elem)
                 link.setSourcePort(parentNode.getPort(elem))
@@ -75,7 +75,7 @@ export default function MailGroupViewer ({
                 
                 // 再帰させる　孫，ひ孫の追加
                 addChildrenNode(childNode)
-                addParentsNode(childNode,[parentNode.id])
+                // addParentsNode(childNode,[parentNode.id]) //とても複雑なものを再起的に描写すると重すぎるためコメントアウト
             }else{
                 // ユーザーアドレス
                 if(isExistUserAddressNode){ return }
@@ -93,7 +93,7 @@ export default function MailGroupViewer ({
         if(usersAddressNode.getOutPorts().length !== 0 && usersAddressNode.getInPorts().length === 1 ){
             if(isExistUserAddressNode){ return }
             const link = new DefaultLinkModel()
-            usersAddressNode.setPosition(pX + 250, pY + 50 * (children.length))
+            usersAddressNode.setPosition(pX + 350, pY + numGroupChildren * 150)
             parentNode.addOutPort("Users")
             link.setSourcePort(parentNode.getPort("Users"))
             link.setTargetPort(usersAddressNode.getPort("Users"))
@@ -118,7 +118,7 @@ export default function MailGroupViewer ({
             if(dissmiss.includes(elem)){ return }
 
             const parentNode = addNode(elem,true,false)
-            parentNode.setPosition(cX - 250, cY - 80 * index)
+            parentNode.setPosition(cX - 350, cY - 80 * index)
             const isGroup = mailGroups.has(elem)
 
             const link = new DefaultLinkModel()
@@ -130,7 +130,7 @@ export default function MailGroupViewer ({
             // //再帰させる　孫，ひ孫の追加
             if(isGroup) {
                 addParentsNode(parentNode)
-                addChildrenNode(parentNode,[childNode.id])
+                // addChildrenNode(parentNode,[childNode.id])　//とても複雑なものを再起的に描写すると重すぎるためコメントアウト
             }
         })
     }
@@ -144,7 +144,7 @@ export default function MailGroupViewer ({
         selectedMailGroups.forEach((elem,index)=>{
             const node = addNode(elem)
             if(!nodes.has(elem)){
-                node.setPosition(40,10+index*120)
+                node.setPosition(40 ,10 + index*120)
             }
             node.setSelected(true)
             addChildrenNode(node)
