@@ -8,8 +8,8 @@ export default function Header ({
     setShowImportDataModal,
     mailGroups,
     setMailGroups,
-    selectedMailGroup,
-    setSelectedMailGroup,
+    selectedMailGroups,
+    setSelectedMailGroups,
 }) {
 
     return (
@@ -18,8 +18,8 @@ export default function Header ({
             <MailSelect
               mailGroups={mailGroups}
               setMailGroups={setMailGroups}
-              selectedMailGroup={selectedMailGroup}
-              setSelectedMailGroup={setSelectedMailGroup}
+              selectedMailGroups={selectedMailGroups}
+              setSelectedMailGroups={setSelectedMailGroups}
             />
             <Button className={styles.uploadDataButton}
                 onClick={() => setShowImportDataModal(true)}

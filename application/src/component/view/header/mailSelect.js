@@ -25,8 +25,8 @@ const options = [
 export default function MailSelect({
   mailGroups,
   setMailGroups,
-  selectedMailGroup,
-  setSelectedMailGroup,
+  selectedMailGroups,
+  setSelectedMailGroups,
 }) {
 
   useEffect(() => {
@@ -45,7 +45,7 @@ export default function MailSelect({
     //     console.log(event)
     //     console.log(newVal)
     //     if(mailGroups.has(newVal)){
-    //       setSelectedMailGroup(newVal)
+    //       setSelectedMailGroups(newVal)
     //     }
     //   }}
     // />
@@ -70,15 +70,16 @@ export default function MailSelect({
       renderInput={(params) => (
         <TextField {...params} label="メールグループ"  />
       )}
-      onChange={(e,v)=>{
-        console.log(e)
-        console.log(v)
+      onChange={(event,value)=>{
+        console.log(event)
+        console.log(value)
+        setSelectedMailGroups(value)
       }}
       // onInputChange={(event,newVal) => {
       //   console.log(event)
       //   console.log(newVal)
       //   if(mailGroups.has(newVal)){
-      //     setSelectedMailGroup(newVal)
+      //     setSelectedMailGroups(newVal)
       //   }
       //  }}
     />

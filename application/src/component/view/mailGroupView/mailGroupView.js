@@ -12,23 +12,25 @@ import { node } from 'prop-types';
 
 const engine = createEngine();
 let model = new DiagramModel()
+let nodes = new Map()
 export default function MailGroupViewer ({
     showDetailInfo,
     setShowDetailInfo,
     mailGroups,
     setMailGroups,
-    selectedMailGroup,
-    setSelectedMailGroup,
+    selectedMailGroups,
+    setSelectedMailGroups,
 }) {
     engine.setModel(model)
 
-    function addNode(address, isParent=false) {
-        const tmpNode = model.getNode(address)
+    function addNode(address, isParent=false, isUsers=false) {
+        const tmpNode = nodes.get(address) 
         if (tmpNode !== undefined) {return tmpNode}
 
         const isGroup = mailGroups.has(address)
-        const node = new DefaultNodeModel({name: address})
+        const node = new DefaultNodeModel({name: isUsers ? "ユーザーアドレス" : address})
         node.id = address
+        
         node.registerListener({
             selectionChanged: (event) => {
                 console.log("selected")
@@ -36,7 +38,8 @@ export default function MailGroupViewer ({
             }
         })
 
-        node.addInPort(" ")
+        node.addInPort(isUsers ? "Users" : " ")
+        nodes.set(address,node)
         model.addAll(node)
         console.log("addNode:"+address)
         return node
@@ -48,31 +51,23 @@ export default function MailGroupViewer ({
         const pY = parentNode.getY()
         
         // ユーザーアドレスをまとめたノード
-        let usersAddressNode = new DefaultNodeModel({name:"ユーザーアドレス"})
-        usersAddressNode.id = parentNode.id + "/users"
-        usersAddressNode.registerListener({
-            selectionChanged: (event) => {
-                setShowDetailInfo(event.isSelected ? usersAddressNode.id : "")
-            }
-        })
-        let users = []
-        let childrenNode = [usersAddressNode]
+        const isExistUserAddressNode = nodes.has(parentNode.id + "/users")
+        let usersAddressNode = addNode( parentNode.id + "/users",false,true)
            
         children.forEach((elem,index) => {
-            // console.log("c:"+elem)
             const isGroup = mailGroups.has(elem)
             
             if(isGroup){
                 // メールグループ
-                if(model.getNode(elem) !== undefined){ return }
+                if(nodes.get(elem) !== undefined){ return }
                 if(dissmiss.includes(elem)){ return }
+                
 
                 const link = new DefaultLinkModel()
                 model.addAll(link)
 
                 const childNode = addNode(elem)
-                childNode.setPosition(pX + 250, pY + 80 * (index - users.length) )
-                childrenNode.push(childNode)
+                childNode.setPosition(pX + 250, pY + 100 * index )
 
                 parentNode.addOutPort(elem)
                 link.setSourcePort(parentNode.getPort(elem))
@@ -83,7 +78,7 @@ export default function MailGroupViewer ({
                 addParentsNode(childNode,[parentNode.id])
             }else{
                 // ユーザーアドレス
-                users.push(elem)
+                if(isExistUserAddressNode){ return }
                 const ports = usersAddressNode.getOutPorts()
                 console.log("test")
                 console.log(ports.length)
@@ -95,15 +90,19 @@ export default function MailGroupViewer ({
             }
         })
         
-        if(usersAddressNode.getOutPorts().length !== 0){
+        if(usersAddressNode.getOutPorts().length !== 0 && usersAddressNode.getInPorts().length === 1 ){
+            if(isExistUserAddressNode){ return }
             const link = new DefaultLinkModel()
-            usersAddressNode.setPosition(pX + 250, pY + 80 * (children.length - users.length))
-            usersAddressNode.addInPort("Users")
+            usersAddressNode.setPosition(pX + 250, pY + 50 * (children.length))
             parentNode.addOutPort("Users")
             link.setSourcePort(parentNode.getPort("Users"))
             link.setTargetPort(usersAddressNode.getPort("Users"))
             
+            nodes.set(usersAddressNode.id,usersAddressNode)
             model.addAll(usersAddressNode,link)
+        } else if(usersAddressNode.getOutPorts().length === 0) {
+            const rmNode = nodes.get(parentNode.id + "/users")
+            model.removeNode(rmNode)
         }
 
         return
@@ -115,10 +114,10 @@ export default function MailGroupViewer ({
         const cX = childNode.getX()
         const cY = childNode.getY()
         parents.forEach((elem,index) => {
-            if(model.getNode(elem) !== undefined){ return }
+            if(nodes.get(elem) !== undefined){ return }
             if(dissmiss.includes(elem)){ return }
 
-            const parentNode = addNode(elem,true)
+            const parentNode = addNode(elem,true,false)
             parentNode.setPosition(cX - 250, cY - 80 * index)
             const isGroup = mailGroups.has(elem)
 
@@ -137,18 +136,24 @@ export default function MailGroupViewer ({
     }
 
     useEffect(() => {
-        console.log("mailGroupView useEffect:"+selectedMailGroup)
-        if (mailGroups === undefined || selectedMailGroup === undefined || !mailGroups.has(selectedMailGroup)) {return}
+        console.log("mailGroupView useEffect:")
+        console.log(selectedMailGroups)
+        if (mailGroups === undefined || selectedMailGroups === undefined ) {return}
         model = new DiagramModel()
-        const node = addNode(selectedMailGroup)
-        node.setPosition(40,10)
-        node.setSelected(true)
-        addChildrenNode(node)
-        addParentsNode(node)
-
+        nodes = new Map() //model.getNode(id) が使えないため自前で管理
+        selectedMailGroups.forEach((elem,index)=>{
+            const node = addNode(elem)
+            if(!nodes.has(elem)){
+                node.setPosition(40,10+index*60)
+            }
+            node.setSelected(true)
+            addChildrenNode(node)
+            addParentsNode(node)
+        })
+        
         engine.setModel(model)
         
-    },[mailGroups,selectedMailGroup])
+    },[mailGroups,selectedMailGroups])
 
     return (
         <div className={styles.mailGroupViewer}>
