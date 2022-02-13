@@ -144,7 +144,7 @@ export default function MailGroupViewer ({
         selectedMailGroups.forEach((elem,index)=>{
             const node = addNode(elem)
             if(!nodes.has(elem)){
-                node.setPosition(40,10+index*60)
+                node.setPosition(40,10+index*120)
             }
             node.setSelected(true)
             addChildrenNode(node)
