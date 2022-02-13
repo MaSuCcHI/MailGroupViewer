@@ -36,19 +36,6 @@ export default function MailSelect({
   if (mailGroups===undefined) { return(<div/>) }
   const t = Array.from(mailGroups.keys())
   return(
-    // <Autocomplete
-    //   multiple
-    //   options={t}
-    //   sx={{ width:600 }}
-    //   renderInput={(prams) => <TextField {...prams} label="メールグループ" />}
-    //   onInputChange={(event,newVal) => {
-    //     console.log(event)
-    //     console.log(newVal)
-    //     if(mailGroups.has(newVal)){
-    //       setSelectedMailGroups(newVal)
-    //     }
-    //   }}
-    // />
     <Autocomplete
       multiple
       // id="checkboxes-tags-demo"
@@ -66,7 +53,7 @@ export default function MailSelect({
           {option}
         </li>
       )}
-      style={{ width: 500 }}
+      style={{ width: "100%" }}
       renderInput={(params) => (
         <TextField {...params} label="メールグループ"  />
       )}

@@ -28,7 +28,10 @@ export default function MailGroupViewer ({
         if (tmpNode !== undefined) {return tmpNode}
 
         const isGroup = mailGroups.has(address)
-        const node = new DefaultNodeModel({name: isUsers ? "ユーザーアドレス" : address})
+        const node = new DefaultNodeModel({
+            name: isUsers ? "ユーザーアドレス" : address,
+            color: isParent ? "rgba(192, 0, 25, 0.2)" :  "rgba(0, 192, 255, 0.2)"
+        })
         node.id = address
         
         node.registerListener({
@@ -60,18 +63,19 @@ export default function MailGroupViewer ({
             if(isGroup){
                 // メールグループ
                 numGroupChildren = numGroupChildren + 1
-                if(nodes.get(elem) !== undefined){ return }
+                // if(nodes.get(elem) !== undefined){ return }
                 if(dissmiss.includes(elem)){ return }
-
-                const link = new DefaultLinkModel()
-                model.addAll(link)
 
                 const childNode = addNode(elem)
                 childNode.setPosition(pX + 350, pY + 100 * (numGroupChildren-1) )
 
-                parentNode.addOutPort(elem)
-                link.setSourcePort(parentNode.getPort(elem))
-                link.setTargetPort(childNode.getPort(" "))
+                if(parentNode.getPort(elem)===undefined){
+                    parentNode.addOutPort(elem)
+                    const link = new DefaultLinkModel()
+                    link.setSourcePort(parentNode.getPort(elem))
+                    link.setTargetPort(childNode.getPort(" "))
+                    model.addAll(link)
+                }
                 
                 // 再帰させる　孫，ひ孫の追加
                 addChildrenNode(childNode)
@@ -138,7 +142,7 @@ export default function MailGroupViewer ({
     useEffect(() => {
         console.log("mailGroupView useEffect:")
         console.log(selectedMailGroups)
-        if (mailGroups === undefined || selectedMailGroups === undefined ) {return}
+        if (mailGroups === undefined || selectedMailGroups === undefined ) {return }
         model = new DiagramModel()
         nodes = new Map() //model.getNode(id) が使えないため自前で管理
         selectedMailGroups.forEach((elem,index)=>{
