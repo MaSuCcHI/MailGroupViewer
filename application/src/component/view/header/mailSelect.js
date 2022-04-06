@@ -53,7 +53,7 @@ export default function MailSelect({
           {option}
         </li>
       )}
-      style={{ width: "100%" }}
+      style={{ width: "65%" }}
       renderInput={(params) => (
         <TextField {...params} label="メールグループ"  />
       )}
