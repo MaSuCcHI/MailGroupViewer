@@ -13,11 +13,22 @@ export default function Header ({
     setMailGroups,
     selectedMailGroups,
     setSelectedMailGroups,
+    viewMode,
+    setViewMode,
 }) {
 
     return (
         <div className={styles.Header}>
-            <Button className={styles.logo} variant="text">メールグループ</Button>
+            <Button 
+                className={styles.logo} 
+                variant="text"
+                onClick={()=> {
+                  if(viewMode==="Diagram"){setViewMode("Venn")}
+                  if(viewMode==="Venn"){setViewMode("Diagram")}  
+                }}
+                >
+                {viewMode}
+            </Button>
             <MailSelect
               mailGroups={mailGroups}
               setMailGroups={setMailGroups}
