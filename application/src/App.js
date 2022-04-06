@@ -7,11 +7,14 @@ import MailGroupViewer from './component/view/mailGroupView/mailGroupView';
 import DetailInfoViewer from './component/view/detailInfo/detailInfoView';
 import Header from './component/view/header/header';
 import UploadFileModal from './component/view/uploadModal/uplodaModal';
+import AuthGoogleModal from './component/view/authGoogleModal/authGoogleModal';
+
 
 function App() {
 
   const [showDetailInfo,setShowDetailInfo] = React.useState("")
   const [showImportDataModal,setShowImportDataModal] = React.useState("")
+  const [showImportDataFromSpleadsheet,setShowImportDataFromSpleadsheet] = React.useState("")
   const [mailGroups,setMailGroups] = React.useState()
   const [selectedMailGroups,setSelectedMailGroups] = React.useState([])
 
@@ -20,6 +23,8 @@ function App() {
       <Header className="Header"
         showImportDataModal={showImportDataModal}
         setShowImportDataModal={setShowImportDataModal}
+        showImportDataFromSpleadsheet={showImportDataFromSpleadsheet}
+        setShowImportDataFromSpleadsheet={setShowImportDataFromSpleadsheet}
         mailGroups={mailGroups}
         setMailGroups={setMailGroups}
         selectedMailGroups={selectedMailGroups}
@@ -33,6 +38,10 @@ function App() {
           mailGroups={mailGroups}
           setMailGroups={setMailGroups}
         />
+        <AuthGoogleModal
+         showImportDataFromSpleadsheet={showImportDataFromSpleadsheet}
+         setShowImportDataFromSpleadsheet={setShowImportDataFromSpleadsheet}
+        /> 
         <MailGroupViewer
           showDetailInfo={showDetailInfo}
           setShowDetailInfo={setShowDetailInfo}

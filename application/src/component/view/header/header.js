@@ -1,11 +1,14 @@
 import styles from './header.module.css'
 import {Button} from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
+import ImportExportIcon from '@mui/icons-material/ImportExport';
 import MailSelect from './mailSelect'
 
 export default function Header ({
     showInportDataModal,
     setShowImportDataModal,
+    showImportDataFromSpleadsheet,
+    setShowImportDataFromSpleadsheet,
     mailGroups,
     setMailGroups,
     selectedMailGroups,
@@ -25,6 +28,11 @@ export default function Header ({
                 onClick={() => setShowImportDataModal(true)}
             >
                 <AddIcon fontSize='large' color='primary'/> up
+            </Button>
+            <Button className={styles.uploadDataButton}
+                onClick={() => setShowImportDataFromSpleadsheet(true)}
+            >
+                <ImportExportIcon fontSize='large' color='primary'/> スプシ連携
             </Button>
         </div>
     )

@@ -1,0 +1,18 @@
+.modal {
+    height: 100%;
+    background-color: rgba(240, 234, 206, 0.529);
+}
+
+.header {
+    height: 40px;
+    text-align: right;
+}
+
+.body {
+    text-align: center;
+    
+}
+
+.footer {
+    text-align: center;
+}
