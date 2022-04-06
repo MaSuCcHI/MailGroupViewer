@@ -41,6 +41,8 @@ function App() {
         <AuthGoogleModal
          showImportDataFromSpleadsheet={showImportDataFromSpleadsheet}
          setShowImportDataFromSpleadsheet={setShowImportDataFromSpleadsheet}
+         mailGroups={mailGroups}
+         setMailGroups={setMailGroups}
         /> 
         <MailGroupViewer
           showDetailInfo={showDetailInfo}

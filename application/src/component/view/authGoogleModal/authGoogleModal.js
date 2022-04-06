@@ -36,40 +36,44 @@ export default function AuthGoogleModal({
     
     const getSpreadsheetValues = async () => {
         const BaseURL = 'https://sheets.googleapis.com/v4/spreadsheets/'
-        const res = await axios.get(`${BaseURL}${SPREAD_SHEET_ID}`+`/values/${SHEET_NAME}`,{
+        const result = await axios.get(`${BaseURL}${SPREAD_SHEET_ID}`+`/values/${SHEET_NAME}`,{
             headers: { Authorization: `Bearer ${accessToken}` },
           });
-        console.log(res.data)
-        return res.data;
-    };
+        console.log(result.data.values)
 
-    const onDrop = useCallback(acceptedFiles => {
-        // Do something with the files
-        console.log(acceptedFiles[0])
-        const reader = new FileReader()
-        reader.readAsText(acceptedFiles[0])
-        reader.onload = () => {
-            const result = Papa.parse(reader.result)
-            //console.log(result.data)
-            // TODO 関数に分割
-            tmpMailGroups = new Map()
-            result.data.forEach((elem, index) => {
-                if(index===0) { return } 
-                let group = elem[0]
-                let user = elem[1]
-                if (!tmpMailGroups.has(group)) {
-                    let parents = new Array()
-                    let children = new Array()
-                    tmpMailGroups.set(group,{"parents":parents,"children":children})
+        let tmpMailGroups = new Map()
+
+        result.data.values.forEach((elem, index) => {
+            if(index===0) { return } 
+            let group = elem[0]
+            let user = elem[1]
+            if (!tmpMailGroups.has(group)) {
+                let parents = new Array()
+                let children = new Array()
+                tmpMailGroups.set(group,{"parents":parents,"children":children})
+            }
+            let children = tmpMailGroups.get(group).children
+            children.push(user)
+        })
+
+        tmpMailGroups.forEach((value,key,m)=>{
+            const children = value["children"]
+            // parentの情報をたどり追加する処理
+            children.forEach(value => {
+                if(tmpMailGroups.has(value)){
+                //メールグループ
+                    let tmp = tmpMailGroups.get(value)
+                    tmp.parents.push(key)
+                }else{
+                //ユーザーメール
+
                 }
-                let children = tmpMailGroups.get(group).children
-                children.push(user)
+                
             })
-            //  console.log(tmpMailGroups)
-        }
-    }, [])
-    
-    const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
+        })
+        setMailGroups(tmpMailGroups) 
+        return tmpMailGroups
+    };
 
     return(
         <Modal isOpen={showImportDataFromSpleadsheet}>
@@ -91,27 +95,8 @@ export default function AuthGoogleModal({
                 <div className={styles.footer}>
                     <Button onClick={() => {
                         if(accessToken != ''){
-                            //トークンを使ってメールグループを取得する
-                            const data = getSpreadsheetValues()
-                            tmpMailGroups.forEach((value,key,m)=>{
-                                const children = value["children"]
-                                // parentの情報をたどり追加する処理
-                                children.forEach(value => {
-                                    if(tmpMailGroups.has(value)){
-                                    //メールグループ
-                                        let tmp = tmpMailGroups.get(value)
-                                        tmp.parents.push(key)
-                                    }else{
-                                    //ユーザーメール
-    
-                                    }
-                                    
-                                })
-                            })
-                            // console.log(tmpMailGroups)
-                            if(tmpMailGroups.size!==0){
-                                setMailGroups(tmpMailGroups)
-                            }
+                            //非同期でトークンを使ってメールグループを取得する
+                            getSpreadsheetValues(setMailGroups)
                         }                        
                         setShowImportDataFromSpleadsheet(false)
                     }}>
