@@ -1,7 +1,8 @@
 import styles from './vennGroupView.module.css'
+import { getChildrenUserMails } from '../../data_transform';
+
 import * as d3 from 'd3';
 import * as venn from "venn.js";
-
 import React, {useEffect, useState,useRef} from "react";
 import ReactDOM from 'react-dom'
 import { node } from 'prop-types';
@@ -25,15 +26,14 @@ export default function VennGroupViewer ({
         const svg = d3.select(container.current)
 
         if (mailGroups === undefined || selectedMailGroups === undefined ) {return }
-        if (selectedMailGroups.length===1){return}
         console.log(selectedMailGroups.length)
 
         console.log(mailGroups.get('gA@test.com').children)
         const sets = []
         selectedMailGroups.forEach( (elem) => {
             let tmp = {}
-            tmp.sets = [mailGroups.get(elem).children] 
-            // tmp.sets = [['aaaa','bbbb']]
+            // tmp.sets = [mailGroups.get(elem).children] 
+            tmp.sets = [Array.from(getChildrenUserMails(elem,mailGroups,true))]
             tmp.size = 100 
             tmp.label = elem
             sets.push(tmp)
