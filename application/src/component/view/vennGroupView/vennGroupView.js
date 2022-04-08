@@ -1,18 +1,13 @@
 import styles from './vennGroupView.module.css'
+import * as d3 from 'd3';
+import * as venn from "venn.js";
 
-import React, {useEffect, useState} from "react";
-import createEngine, {
-    DiagramModel,
-    DefaultNodeModel,
-    DefaultLinkModel,
-} from "@projectstorm/react-diagrams"
-import { CanvasWidget } from '@projectstorm/react-canvas-core';
+import React, {useEffect, useState,useRef} from "react";
+import ReactDOM from 'react-dom'
 import { node } from 'prop-types';
+import { useForkRef } from '@mui/material';
 
 
-const engine = createEngine();
-let model = new DiagramModel()
-let nodes = new Map()
 export default function VennGroupViewer ({
     showDetailInfo,
     setShowDetailInfo,
@@ -22,9 +17,45 @@ export default function VennGroupViewer ({
     setSelectedMailGroups,
 }) {
 
+    const container = useRef(null);
+    const chart = venn.VennDiagram()
+    useEffect(() => {
+        console.log("VennGroupView useEffect:")
+        console.log(selectedMailGroups)
+        const svg = d3.select(container.current)
+
+        if (mailGroups === undefined || selectedMailGroups === undefined ) {return }
+        if (selectedMailGroups.length===1){return}
+        console.log(selectedMailGroups.length)
+
+        console.log(mailGroups.get('gA@test.com').children)
+        const sets = []
+        selectedMailGroups.forEach( (elem) => {
+            let tmp = {}
+            tmp.sets = [mailGroups.get(elem).children] 
+            // tmp.sets = [['aaaa','bbbb']]
+            tmp.size = 100 
+            tmp.label = elem
+            sets.push(tmp)
+        })
+        console.log(sets)
+        
+
+        svg.datum(sets).call(chart)
+        
+
+
+    },[mailGroups,selectedMailGroups])
+
+    
     return (
-        <div className={styles.mailGroupViewer}>
-            test
-        </div>
-    )
+        <svg
+        className='venn'
+        height={600}
+        width={600}
+        ref={container}
+        />
+
+        )
+
 }
