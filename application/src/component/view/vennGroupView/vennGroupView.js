@@ -29,38 +29,42 @@ export default function VennGroupViewer ({
         if (mailGroups === undefined || selectedMailGroups === undefined ) {return }
         console.log(selectedMailGroups.length)
 
-        // const sets = []
-        // selectedMailGroups.forEach( (elem,index) => {
-        //     let tmp = {}
-        //     // tmp.sets = [mailGroups.get(elem).children] 
-        //     let setA = getChildrenUserMails(elem,mailGroups,true) 
-        //     tmp.sets = [Array.from(setA)]
-        //     tmp.size =  10 * setA.size
-        //     tmp.label = elem
-        //     sets.push(tmp)
-        // })
-        // console.log(sets)
+        const sets = []
+        const ABC = []
 
-        // let setA = getChildrenUserMails(selectedMailGroups[0],mailGroups,true) 
-        // let setB = getChildrenUserMails(selectedMailGroups[1],mailGroups,true) 
-        // let interset = setA.union(setB)
-        
-        // let tmp1 = {}
-        // tmp1.sets = [Array.from(interset)]
-        // tmp1.size = interset.size
-        // // tmp1.label = 'setA ∩ setB'
-        // console.log(tmp1.sets)
-        // sets.push(tmp1)
+        for(const elem of selectedMailGroups) {
+            console.log(elem)
+            let childrenUser = getChildrenUserMails(elem,mailGroups,true)
 
-        var sets1 = [
-            {sets: ['A'], size: 12},
-            {sets: ['B'], size: 12},
-            {sets: ['C'], size: 12},
-            {sets: ['A','B'], size: 2},
-            {sets: ['A','C'], size: 2},
-            {sets: ['B','C'], size: 0}
-        ];
-        svg.datum(sets1).call(chart)
+            let mailSet = {}
+            mailSet.sets = [elem]
+            mailSet.size = childrenUser.size 
+
+            sets.push(mailSet)
+            for(const addedMailgroup of ABC){
+                let childrenUser_addedMailgroup = getChildrenUserMails(addedMailgroup,mailGroups,true)
+
+                let mailSet_addedMailgroup = {}
+                mailSet_addedMailgroup.sets = [elem,addedMailgroup]
+                mailSet_addedMailgroup.size = childrenUser.intersection(childrenUser_addedMailgroup)
+                sets.push(mailSet_addedMailgroup)
+            }
+            ABC.push(elem)
+        }
+
+        console.log(sets)
+        svg.datum(sets).call(chart)
+
+        // var sets1 = [
+        //     {sets: ['A'], size: 12},
+        //     {sets: ['B'], size: 12},
+        //     {sets: ['C'], size: 12},
+        //     {sets: ['A','B'], size: 2},
+        //     {sets: ['A','C'], size: 2},
+        //     {sets: ['B','C'], size: 0}
+        // ];
+        // svg.datum(sets1).call(chart)
+
     },[mailGroups,selectedMailGroups])
 
     
