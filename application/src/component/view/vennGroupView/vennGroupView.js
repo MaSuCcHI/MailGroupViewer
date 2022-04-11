@@ -50,6 +50,15 @@ export default function VennGroupViewer ({
                 mailSet_addedMailgroup.size = childrenUser.intersection(childrenUser_addedMailgroup).size
                 sets.push(mailSet_addedMailgroup)
             }
+            // 三つのメールグループに含まれるもの
+            if(ABC.size === 2){
+                let AchildrenUser_addedMailgroup = getChildrenUserMails(ABC[0],mailGroups,true)
+                let BchildrenUser_addedMailgroup = getChildrenUserMails(ABC[1],mailGroups,true) 
+                let mailSet_addedMailgroup = {}
+                mailSet_addedMailgroup.sets = [elem,ABC[0],ABC[1]]
+                mailSet_addedMailgroup.size = childrenUser.intersection(AchildrenUser_addedMailgroup).intersection(BchildrenUser_addedMailgroup).size
+                sets.push(mailSet_addedMailgroup)
+            }
             ABC.push(elem)
         }
 
