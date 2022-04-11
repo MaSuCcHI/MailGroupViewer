@@ -7,28 +7,6 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import { getChildrenUserMails } from '../../data_transform';
 
-
-// function getChildrenUserMails(group,mailGroups,gatherGrandchild) {
-//     let users = new Set()
-//     console.log(mailGroups)
-//     console.log(group)
-//     const address = mailGroups.get(group).children
-//     console.log(address)
-//     address.forEach(element => {
-//         console.log("test10")
-//         if(mailGroups.has(element)){
-//             // グループ 
-//             if(gatherGrandchild){
-//                 users = union(users,getChildrenUserMails(element,mailGroups,true))
-//             }
-//         } else {
-//             //　ユーザー
-//             users.add(element)
-//         }
-//     });
-//     return users
-// }
-
 export default function DetailInfoViewer ({
     showDetailInfo,
     setShowDetailInfo,

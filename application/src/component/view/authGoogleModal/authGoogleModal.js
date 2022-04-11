@@ -39,7 +39,7 @@ export default function AuthGoogleModal({
         const result = await axios.get(`${BaseURL}${SPREAD_SHEET_ID}`+`/values/${SHEET_NAME}`,{
             headers: { Authorization: `Bearer ${accessToken}` },
           });
-        console.log(result.data.values)
+        // console.log(result.data.values)
 
         let tmpMailGroups = new Map()
 
@@ -89,12 +89,12 @@ export default function AuthGoogleModal({
                             scope='https://www.googleapis.com/auth/spreadsheets'
                             cookiePolicy={'single_host_origin'}
                             />
-                        ):(<>{accessToken}</>)
+                        ):(<>ALL OK</>)
                         }
                     </div>
                 <div className={styles.footer}>
                     <Button onClick={() => {
-                        if(accessToken != ''){
+                        if(accessToken !== ''){
                             //非同期でトークンを使ってメールグループを取得する
                             getSpreadsheetValues(setMailGroups)
                         }                        

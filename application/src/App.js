@@ -33,6 +33,8 @@ function App() {
         setSelectedMailGroups={setSelectedMailGroups}
         viewMode={viewMode}
         setViewMode={setViewMode}
+        showDetailInfo={showDetailInfo}
+        setShowDetailInfo={setShowDetailInfo}
       />
       
       <div className='MainApp'>
