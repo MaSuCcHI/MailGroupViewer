@@ -4,9 +4,7 @@ import { getChildrenUserMails } from '../../data_transform';
 import * as d3 from 'd3';
 import * as venn from "venn.js";
 import React, {useEffect, useState,useRef} from "react";
-import ReactDOM from 'react-dom'
-import { node } from 'prop-types';
-import { useForkRef } from '@mui/material';
+import { Tooltip } from '@mui/material';
 
 
 export default function VennGroupViewer ({
@@ -17,14 +15,17 @@ export default function VennGroupViewer ({
     selectedMailGroups,
     setSelectedMailGroups,
 }) {
-
     const container = useRef(null);
+    const [tooltipText,setTooltipText] = useState("test")
+
     const chart = venn.VennDiagram()
+
     useEffect(() => {
         console.log("VennGroupView useEffect:")
         if(selectedMailGroups.length > 3){return}
         console.log(selectedMailGroups)
         const svg = d3.select(container.current)
+        
 
         if (mailGroups === undefined || selectedMailGroups === undefined ) {return }
         console.log(selectedMailGroups.length)
@@ -46,7 +47,7 @@ export default function VennGroupViewer ({
 
                 let mailSet_addedMailgroup = {}
                 mailSet_addedMailgroup.sets = [elem,addedMailgroup]
-                mailSet_addedMailgroup.size = childrenUser.intersection(childrenUser_addedMailgroup)
+                mailSet_addedMailgroup.size = childrenUser.intersection(childrenUser_addedMailgroup).size
                 sets.push(mailSet_addedMailgroup)
             }
             ABC.push(elem)
@@ -54,6 +55,35 @@ export default function VennGroupViewer ({
 
         console.log(sets)
         svg.datum(sets).call(chart)
+
+        svg.selectAll("path")
+            .style("stroke-opacity", 0)
+            .style("stroke", "#fff")
+            .style("stroke-width", 2)
+
+        svg.selectAll('g').on('mouseover',function(d,i) {
+            venn.sortAreas(svg,d)
+            // console.log(d.size)
+            setTooltipText(d.size + 'ユーザー')
+
+            const selection = d3.select(this).transition("tooltip").duration(400);
+            console.log(selection.select('path'))
+            selection
+                .select("path")
+                .style("stroke-width", 10)
+                .style("fill-opacity", d.sets.length === 1 ? 0.4 : 0.1)
+                .style("stroke-opacity", 1);
+
+        })
+        .on('mouseout', function(d,i) {
+            const selection = d3.select(this).transition("tooltip").duration(400);
+            console.log(selection.select('path'))
+            selection
+                .select("path")
+                .style("stroke-width", 0)
+                .style("fill-opacity", d.sets.length === 1 ? .25 : .0)
+                .style("stroke-opacity", 0);
+        })
 
         // var sets1 = [
         //     {sets: ['A'], size: 12},
@@ -68,15 +98,17 @@ export default function VennGroupViewer ({
     },[mailGroups,selectedMailGroups])
 
     
-    return (
-        <svg
-        className='venn'
-        height={600}
-        width={600}
-        ref={container}
-        />
-
+    return (        
+        <Tooltip title={tooltipText} followCursor>
+            <svg
+            className='venn'
+            height={600}
+            width={1200}
+            ref={container}
+            />
+        </Tooltip>
         )
+        
 
 }
 
