@@ -53,29 +53,28 @@ export default function DetailInfoViewer ({
         )
     }
     
-    console.log('tttt'+showDetailInfoMailGroups)
-    for(const mailGcoup of showDetailInfoMailGroups){
-        const tmp = mailGcoup.split('/')
-        if (tmp[0] !== "" && mailGroups.has(tmp[0])) {
-            let users = []
-            if( tmp[1]===undefined ){
-                // メールグループノード
-                users = Array.from(getChildrenUserMails(tmp[0],mailGroups,true))
-            } else if ( tmp[1]==="users" ) {
-                // ユーザーアドレスノード
-                users = Array.from(getChildrenUserMails(tmp[0],mailGroups,false))
-            }
-            console.log(users)
-            cards.push(
-                <div className={styles.detailInfoViewer}>
-                    <MailGroupInfo users={users} mailGroup={showDetailInfoMailGroups}/>
-                </div>
-            )
-        }  
-    }
+    // console.log(showDetailInfoMailGroups)
+    // console.log('size' + showDetailInfoMailGroups.size)
+    if(showDetailInfoMailGroups.size === 0){return null}
     return(
         <div>
-        {cards}
+        {
+            Array.from(showDetailInfoMailGroups).map((mailGcoup, index) => {
+                const tmp = mailGcoup.split('/')
+                let users = []
+                if (tmp[0] !== "" && mailGroups.has(tmp[0])) {
+                    if( tmp[1]===undefined ){
+                        // メールグループノード
+                        users = Array.from(getChildrenUserMails(tmp[0],mailGroups,true))
+                    } else if ( tmp[1]==="users" ) {
+                        // ユーザーアドレスノード
+                        users = Array.from(getChildrenUserMails(tmp[0],mailGroups,false))
+                    }
+                    console.log(users)
+                }  
+                return(<MailGroupInfo users={users} mailGroup={mailGcoup}/>)
+            })
+        }
         </div>
     )
 }
