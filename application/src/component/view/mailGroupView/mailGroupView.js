@@ -14,8 +14,8 @@ const engine = createEngine();
 let model = new DiagramModel()
 let nodes = new Map()
 export default function MailGroupViewer ({
-    showDetailInfo,
-    setShowDetailInfo,
+    showDetailInfoMailGroups,
+    setShowDetailInfoMailGroups,
     mailGroups,
     setMailGroups,
     selectedMailGroups,
@@ -37,7 +37,8 @@ export default function MailGroupViewer ({
         node.registerListener({
             selectionChanged: (event) => {
                 console.log("selected")
-                setShowDetailInfo(event.isSelected ? address : "")
+                console.log(event.isSelected)
+                setShowDetailInfoMailGroups(event.isSelected ? address : address)
             }
         })
 

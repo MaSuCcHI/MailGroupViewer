@@ -8,8 +8,8 @@ import { Tooltip } from '@mui/material';
 
 
 export default function VennGroupViewer ({
-    showDetailInfo,
-    setShowDetailInfo,
+    showDetailInfoMailGroups,
+    setShowDetailInfoMailGroups,
     mailGroups,
     setMailGroups,
     selectedMailGroups,

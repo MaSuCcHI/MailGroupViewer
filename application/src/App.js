@@ -13,11 +13,13 @@ import AuthGoogleModal from './component/view/authGoogleModal/authGoogleModal';
 
 function App() {
 
-  const [showDetailInfo,setShowDetailInfo] = React.useState("")
   const [showImportDataModal,setShowImportDataModal] = React.useState("")
   const [showImportDataFromSpleadsheet,setShowImportDataFromSpleadsheet] = React.useState("")
   const [mailGroups,setMailGroups] = React.useState()
+  // header で選択されているメールグループを配列保持
   const [selectedMailGroups,setSelectedMailGroups] = React.useState([])
+  //  detail Infoを表示するメールグループを配列で保持
+  const [showDetailInfoMailGroups,setShowDetailInfoMailGroups] = React.useState("")
   const [viewMode,setViewMode] =React.useState("Diagram")
 
   return (
@@ -33,8 +35,8 @@ function App() {
         setSelectedMailGroups={setSelectedMailGroups}
         viewMode={viewMode}
         setViewMode={setViewMode}
-        showDetailInfo={showDetailInfo}
-        setShowDetailInfo={setShowDetailInfo}
+        showDetailInfoMailGroups={showDetailInfoMailGroups}
+        setShowDetailInfoMailGroups={setShowDetailInfoMailGroups}
       />
       
       <div className='MainApp'>
@@ -52,28 +54,29 @@ function App() {
         /> 
         {viewMode==='Diagram' && (
         <MailGroupViewer
-            showDetailInfo={showDetailInfo}
-            setShowDetailInfo={setShowDetailInfo}
+            showDetailInfoMailGroups={showDetailInfoMailGroups}
+            setShowDetailInfoMailGroups={setShowDetailInfoMailGroups}
             mailGroups={mailGroups}
             setMailGroups={setMailGroups}
             selectedMailGroups={selectedMailGroups}
             setSelectedMailgroups={setSelectedMailGroups}
           />)}
-        <DetailInfoViewer
-          showDetailInfo={showDetailInfo}
-          etShowDetailInfo={setShowDetailInfo}
-          mailGroups={mailGroups}
-        />
 
         {viewMode==="Venn" && (
         <VennGroupViewer
-            showDetailInfo={showDetailInfo}
-            setShowDetailInfo={setShowDetailInfo}
+            showDetailInfoMailGroups={showDetailInfoMailGroups}
+            setShowDetailInfoMailGroups={setShowDetailInfoMailGroups}
             mailGroups={mailGroups}
             setMailGroups={setMailGroups}
             selectedMailGroups={selectedMailGroups}
             setSelectedMailgroups={setSelectedMailGroups}
         />)}
+
+        <DetailInfoViewer
+          showDetailInfoMailGroups={showDetailInfoMailGroups}
+          setShowDetailInfoMailGroups={setShowDetailInfoMailGroups}
+          mailGroups={mailGroups}
+        />
 
         
       </div>
