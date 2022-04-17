@@ -19,7 +19,7 @@ function App() {
   // header で選択されているメールグループを配列保持
   const [selectedMailGroups,setSelectedMailGroups] = React.useState([])
   //  detail Infoを表示するメールグループを配列で保持
-  const [showDetailInfoMailGroups,setShowDetailInfoMailGroups] = React.useState("")
+  const [showDetailInfoMailGroups,setShowDetailInfoMailGroups] = React.useState(new Set())
   const [viewMode,setViewMode] =React.useState("Diagram")
 
   return (

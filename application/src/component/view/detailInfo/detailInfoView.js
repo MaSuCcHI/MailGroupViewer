@@ -1,5 +1,5 @@
 import styles from './detailInfoView.module.css'
-import React, {useEffect,useState} from "react";
+import React, {useEffect,useState,ReactDOM} from "react";
 
 import { Aod } from '@mui/icons-material';
 import Card from '@mui/material/Card';
@@ -15,6 +15,8 @@ export default function DetailInfoViewer ({
     mailGroups,
 }){
     const [showAllUserMails,setShowAllUserMails] = useState(false)
+    let cards = []
+    
 
     function MailGroupInfo(props){
         const mailGroup = props.mailGroup
@@ -50,26 +52,30 @@ export default function DetailInfoViewer ({
             
         )
     }
-
-    const detailTarget = showDetailInfoMailGroups.split("/")
-    console.log("test:"+detailTarget)
-    if (detailTarget[0] !== "" && mailGroups.has(detailTarget[0])) {
-        let users = []
-        if( detailTarget[1]===undefined ){
-            // メールグループノード
-            users = Array.from(getChildrenUserMails(detailTarget[0],mailGroups,true))
-        } else if ( detailTarget[1]==="users" ) {
-            // ユーザーアドレスノード
-            users = Array.from(getChildrenUserMails(detailTarget[0],mailGroups,false))
-        }
-        console.log(users)
-        return (
-            <div className={styles.detailInfoViewer}>
-                <MailGroupInfo users={users} mailGroup={showDetailInfoMailGroups}/>
-            </div>
-        )
-    } else {
-        return null
+    
+    console.log('tttt'+showDetailInfoMailGroups)
+    for(const mailGcoup of showDetailInfoMailGroups){
+        const tmp = mailGcoup.split('/')
+        if (tmp[0] !== "" && mailGroups.has(tmp[0])) {
+            let users = []
+            if( tmp[1]===undefined ){
+                // メールグループノード
+                users = Array.from(getChildrenUserMails(tmp[0],mailGroups,true))
+            } else if ( tmp[1]==="users" ) {
+                // ユーザーアドレスノード
+                users = Array.from(getChildrenUserMails(tmp[0],mailGroups,false))
+            }
+            console.log(users)
+            cards.push(
+                <div className={styles.detailInfoViewer}>
+                    <MailGroupInfo users={users} mailGroup={showDetailInfoMailGroups}/>
+                </div>
+            )
+        }  
     }
-
+    return(
+        <div>
+        {cards}
+        </div>
+    )
 }

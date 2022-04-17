@@ -37,8 +37,10 @@ export default function MailGroupViewer ({
         node.registerListener({
             selectionChanged: (event) => {
                 console.log("selected")
-                console.log(event.isSelected)
-                setShowDetailInfoMailGroups(event.isSelected ? address : address)
+                // console.log(event)
+                let detailInfoMailGroups = showDetailInfoMailGroups
+                detailInfoMailGroups.add(address)
+                setShowDetailInfoMailGroups(detailInfoMailGroups)
             }
         })
 
