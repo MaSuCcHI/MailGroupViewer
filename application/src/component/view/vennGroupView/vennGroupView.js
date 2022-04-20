@@ -21,7 +21,6 @@ export default function VennGroupViewer ({
     const chart = venn.VennDiagram()
 
     useEffect(() => {
-        console.log("VennGroupView useEffect:")
         if(selectedMailGroups.length > 3){return}
         console.log(selectedMailGroups)
         const svg = d3.select(container.current)
@@ -62,7 +61,6 @@ export default function VennGroupViewer ({
             ABC.push(elem)
         }
 
-        console.log(sets)
         svg.datum(sets).call(chart)
 
         svg.selectAll("path")
@@ -86,7 +84,7 @@ export default function VennGroupViewer ({
         })
         .on('mouseout', function(d,i) {
             const selection = d3.select(this).transition("tooltip").duration(400);
-            console.log(selection.select('path'))
+            // console.log(selection.select('path'))
             selection
                 .select("path")
                 .style("stroke-width", 0)

@@ -16,6 +16,10 @@ export default function DetailInfoViewer ({
 }){
     const [showAllUserMails,setShowAllUserMails] = useState(false)
     let cards = []
+
+    useEffect(() => {
+        // console.log('detail Info View useEffect')
+    },[])
     
 
     function MailGroupInfo(props){
@@ -59,8 +63,8 @@ export default function DetailInfoViewer ({
     return(
         <div>
         {
-            Array.from(showDetailInfoMailGroups).map((mailGcoup, index) => {
-                const tmp = mailGcoup.split('/')
+            Array.from(showDetailInfoMailGroups).map((mailGroup, index) => {
+                const tmp = mailGroup.split('/')
                 let users = []
                 if (tmp[0] !== "" && mailGroups.has(tmp[0])) {
                     if( tmp[1]===undefined ){
@@ -72,7 +76,7 @@ export default function DetailInfoViewer ({
                     }
                     console.log(users)
                 }  
-                return(<MailGroupInfo users={users} mailGroup={mailGcoup}/>)
+                return(<MailGroupInfo users={users} mailGroup={mailGroup}/>)
             })
         }
         </div>

@@ -20,7 +20,7 @@ export default function UploadFileModal ({
     
     const onDrop = useCallback(acceptedFiles => {
         // Do something with the files
-        console.log(acceptedFiles[0])
+        // console.log(acceptedFiles[0])
         const reader = new FileReader()
         reader.readAsText(acceptedFiles[0])
         reader.onload = () => {

@@ -9,9 +9,8 @@ function union(setA, setB) {
 export const getChildrenUserMails = (mailGroup,mailGroupsData,gatherGrandchild) => {
     let users = new Set()
     const address = mailGroupsData.get(mailGroup).children
-    console.log(address)
     address.forEach(element => {
-        console.log("test10")
+        // console.log("test10")
         if(mailGroupsData.has(element)){
             // グループ 
             if(gatherGrandchild){
@@ -22,7 +21,7 @@ export const getChildrenUserMails = (mailGroup,mailGroupsData,gatherGrandchild) 
             users.add(element)
         }
     });
-    console.log(mailGroup)
-    console.log(users)
+    // console.log(mailGroup)
+    // console.log(users)
     return users
 }

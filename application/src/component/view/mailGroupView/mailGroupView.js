@@ -36,10 +36,20 @@ export default function MailGroupViewer ({
         
         node.registerListener({
             selectionChanged: (event) => {
-                console.log("selected")
-                // console.log(event)
-                let detailInfoMailGroups = showDetailInfoMailGroups
-                detailInfoMailGroups.add(address)
+                console.log(event)
+                let detailInfoMailGroups = new Set(showDetailInfoMailGroups)
+                console.log(showDetailInfoMailGroups) 
+                if(!event.isSelected){
+                    node.setSelected(!node.isSelected)
+                }
+                if(event.isSelected){
+                    if(detailInfoMailGroups.has(address)){
+                        // detailInfoMailGroups.delete(address)
+                    }else{
+                        detailInfoMailGroups.add(address)
+                    }
+                }
+                console.log(detailInfoMailGroups)
                 setShowDetailInfoMailGroups(detailInfoMailGroups)
             }
         })
@@ -144,7 +154,7 @@ export default function MailGroupViewer ({
 
     useEffect(() => {
         console.log("mailGroupView useEffect:")
-        console.log(selectedMailGroups)
+        console.log(showDetailInfoMailGroups)
         if (mailGroups === undefined || selectedMailGroups === undefined ) {return }
         model = new DiagramModel()
         nodes = new Map() //model.getNode(id) が使えないため自前で管理

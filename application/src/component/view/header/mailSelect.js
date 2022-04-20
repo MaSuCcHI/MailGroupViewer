@@ -58,17 +58,10 @@ export default function MailSelect({
         <TextField {...params} label="メールグループ"  />
       )}
       onChange={(event,value)=>{
-        console.log(event)
-        console.log(value)
+        // console.log(event)
+        // console.log(value)
         setSelectedMailGroups(value)
       }}
-      // onInputChange={(event,newVal) => {
-      //   console.log(event)
-      //   console.log(newVal)
-      //   if(mailGroups.has(newVal)){
-      //     setSelectedMailGroups(newVal)
-      //   }
-      //  }}
     />
   )
 }

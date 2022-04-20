@@ -26,7 +26,7 @@ export default function AuthGoogleModal({
     
     const onSuccess = (res) => {
         if ('accessToken' in res) {
-          console.log(res.accessToken);
+        //   console.log(res.accessToken);
           setAccessToken(res.accessToken);
         }
     };
