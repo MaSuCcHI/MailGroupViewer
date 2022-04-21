@@ -31,13 +31,14 @@ export default function VennGroupViewer ({
 
         const sets = []
         const ABC = []
-
+        
         for(const elem of selectedMailGroups) {
             console.log(elem)
             let childrenUser = getChildrenUserMails(elem,mailGroups,true)
 
             let mailSet = {}
             mailSet.sets = [elem]
+            mailSet.label = elem.split('@')[0]
             mailSet.size = childrenUser.size 
 
             sets.push(mailSet)

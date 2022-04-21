@@ -27,6 +27,8 @@ export default function MailSelect({
   setMailGroups,
   selectedMailGroups,
   setSelectedMailGroups,
+  showDetailInfoMailGroups,
+  setShowDetailInfoMailGroups
 }) {
 
   useEffect(() => {
@@ -58,9 +60,10 @@ export default function MailSelect({
         <TextField {...params} label="メールグループ"  />
       )}
       onChange={(event,value)=>{
-        // console.log(event)
-        // console.log(value)
+        console.log('val')
+        console.log(value)
         setSelectedMailGroups(value)
+        setShowDetailInfoMailGroups(new Set(value))
       }}
     />
   )

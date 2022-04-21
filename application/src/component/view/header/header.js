@@ -36,6 +36,8 @@ export default function Header ({
               setMailGroups={setMailGroups}
               selectedMailGroups={selectedMailGroups}
               setSelectedMailGroups={setSelectedMailGroups}
+              showDetailInfoMailGroups={showDetailInfoMailGroups}
+              setShowDetailInfoMailGroups={setShowDetailInfoMailGroups}
             />
             <Button className={styles.uploadDataButton}
                 onClick={() => setShowImportDataModal(true)}
