@@ -7,7 +7,7 @@ import createEngine, {
     DefaultLinkModel,
 } from "@projectstorm/react-diagrams"
 import { CanvasWidget } from '@projectstorm/react-canvas-core';
-import { node } from 'prop-types';
+import { Point } from '@projectstorm/geometry';
 
 
 const engine = createEngine();
@@ -161,13 +161,15 @@ export default function MailGroupViewer ({
         selectedMailGroups.forEach((elem,index)=>{
             const node = addNode(elem)
             if(!nodes.has(elem)){
-                node.setPosition(40 ,10 + index*120)
+                
+                node.setPosition(Point(40 ,160+index*120))
+                // node.setPosition(40 ,160+index*120)
             }
             node.setSelected(true)
             addChildrenNode(node)
             addParentsNode(node)
         })
-        
+
         engine.setModel(model)
         
     },[mailGroups,selectedMailGroups])
