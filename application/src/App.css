@@ -11,10 +11,6 @@ body > #root > div {
   height: 100%;
   width: 100%;
   display: flex;
-  position: absolute;
-  top: 0px;
-  z-index: 0;
-  pointer-events: all;
 }
 
 .App-logo {
