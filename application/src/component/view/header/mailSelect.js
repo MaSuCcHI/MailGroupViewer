@@ -1,12 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import { height } from '@mui/system';
 
 import Checkbox from '@mui/material/Checkbox';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
@@ -55,7 +49,7 @@ export default function MailSelect({
           {option}
         </li>
       )}
-      style={{ width: "65%" }}
+      style={{ width: "65%",alignItems: 'center', display:'flex' }}
       renderInput={(params) => (
         <TextField {...params} label="メールグループ"  />
       )}

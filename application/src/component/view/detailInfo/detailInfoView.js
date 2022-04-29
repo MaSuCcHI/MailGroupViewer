@@ -29,7 +29,7 @@ export default function DetailInfoViewer ({
         console.log(users)
         return(
             // <div>te sa t</div>
-                <Card>
+                <Card style={{minWidth:'250px'}}>
                     <CardContent>
                         <Typography variant="h5" component="div">
                             {mailGroup}
@@ -51,6 +51,7 @@ export default function DetailInfoViewer ({
                     <Button size='small' onClick={() => {setShowAllUserMails(!showAllUserMails)}}>
                        {showAllUserMails ? 'less' : 'all: ' + users.length + ' ユーザー' }
                     </Button>
+                    <Button size='small'>GCP権限をDL</Button>
                     </CardActions> : ""}
                 </Card>
             
@@ -61,7 +62,7 @@ export default function DetailInfoViewer ({
     // console.log('size' + showDetailInfoMailGroups.size)
     if(showDetailInfoMailGroups.size === 0){return null}
     return(
-        <div>
+        <div className={styles.detailInfoViewer}>
         {
             Array.from(showDetailInfoMailGroups).map((mailGroup, index) => {
                 const tmp = mailGroup.split('/')
