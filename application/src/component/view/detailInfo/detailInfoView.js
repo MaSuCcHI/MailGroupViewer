@@ -51,7 +51,7 @@ export default function DetailInfoViewer ({
                     <Button size='small' onClick={() => {setShowAllUserMails(!showAllUserMails)}}>
                        {showAllUserMails ? 'less' : 'all: ' + users.length + ' ユーザー' }
                     </Button>
-                    <Button size='small'>GCP権限をDL</Button>
+                    {/* <Button size='small'>GCP権限をDL</Button> */}
                     </CardActions> : ""}
                 </Card>
             
