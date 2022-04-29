@@ -159,11 +159,10 @@ export default function MailGroupViewer ({
         model = new DiagramModel()
         nodes = new Map() //model.getNode(id) が使えないため自前で管理
         selectedMailGroups.forEach((elem,index)=>{
+            const hasNode = nodes.has(elem)
             const node = addNode(elem)
-            if(!nodes.has(elem)){
-                
-                node.setPosition(Point(40 ,160+index*120))
-                // node.setPosition(40 ,160+index*120)
+            if(!hasNode){ 
+                 node.setPosition(40 ,160-index*120)
             }
             node.setSelected(true)
             addChildrenNode(node)
