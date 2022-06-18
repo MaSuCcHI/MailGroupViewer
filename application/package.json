@@ -1,6 +1,6 @@
 {
   "name": "application",
-  "homepage": "http://MaSuCcHI.github.io/MailGroupViewer",
+  "homepage": "./",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
